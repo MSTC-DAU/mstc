@@ -29,6 +29,7 @@ function SubmitButton() {
 
 const initialState = {
     message: '',
+    success: false,
 };
 
 export default function CreateEventPage() {
@@ -204,7 +205,7 @@ export default function CreateEventPage() {
                 </div>
 
                 {state?.message && (
-                    <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+                    <div className={`p-4 rounded-lg border text-sm text-center ${state?.success ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
                         {state.message}
                     </div>
                 )}

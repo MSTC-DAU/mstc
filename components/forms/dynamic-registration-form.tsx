@@ -9,6 +9,52 @@ import { Label } from '@/components/ui/label';
 import { registerForEvent } from '@/app/actions/registrations';
 import { useActionState, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+function PrioritySelects({ domains }: { domains: string[] }) {
+    const [selections, setSelections] = useState<{ [key: number]: string }>({});
+
+    const handleChange = (rank: number, value: string) => {
+        setSelections(prev => ({
+            ...prev,
+            [rank]: value
+        }));
+    };
+
+    const getAvailableDomains = (currentRank: number) => {
+        const selectedOthers = Object.entries(selections)
+            .filter(([r]) => parseInt(r) !== currentRank)
+            .map(([, v]) => v);
+        return domains.filter(d => !selectedOthers.includes(d));
+    };
+
+    return (
+        <div className="space-y-4">
+            {[1, 2, 3].map((rank) => (
+                <div key={rank} className="space-y-2">
+                    <Label className="text-xs font-medium uppercase tracking-wider text-gray-500">Priority {rank}</Label>
+                    <input type="hidden" name={`priority_${rank}`} value={selections[rank] || ''} />
+                    <Select
+                        value={selections[rank] || ''}
+                        onValueChange={(val) => handleChange(rank, val)}
+                        required={rank === 1}
+                    >
+                        <SelectTrigger className="bg-black/40 border-white/10 text-white focus:ring-cyan-500/20">
+                            <SelectValue placeholder="Select Domain..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black/80 backdrop-blur-xl border-white/10 text-white">
+                            {getAvailableDomains(rank).map((domain) => (
+                                <SelectItem key={domain} value={domain} className="focus:bg-cyan-500/20 focus:text-cyan-400">
+                                    {domain}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            ))}
+        </div>
+    );
+}
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -89,21 +135,7 @@ export default function DynamicRegistrationForm({ config, eventId }: { config: a
                     <h3 className="text-lg font-semibold text-cyan-400">Domain Preferences</h3>
                     <p className="text-sm text-gray-400">Select your top 3 choices. Admins will assign you one based on your profile.</p>
 
-                    {[1, 2, 3].map((rank) => (
-                        <div key={rank} className="space-y-2">
-                            <Label>Priority {rank}</Label>
-                            <select
-                                name={`priority_${rank}`}
-                                className="w-full h-10 px-3 bg-black/20 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm"
-                                required={rank === 1} // Only 1st is mandatory? Or all? Let's make 1st mandatory.
-                            >
-                                <option value="">Select Domain...</option>
-                                {config.availableDomains.map((domain: string) => (
-                                    <option key={domain} value={domain}>{domain}</option>
-                                ))}
-                            </select>
-                        </div>
-                    ))}
+                    <PrioritySelects domains={config.availableDomains} />
                 </div>
             )}
 

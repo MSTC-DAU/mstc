@@ -74,7 +74,7 @@ export default function RoadmapViewer({
                                         <CardTitle className="text-xl">{week.tasks.length} Tasks</CardTitle>
                                     </div>
                                     <Badge variant="outline" className={`capitalize ${isCompleted ? 'border-green-500/30 text-green-400' :
-                                            isSubmitted ? 'border-yellow-500/30 text-yellow-400' : 'border-gray-500/30 text-gray-500'
+                                        isSubmitted ? 'border-yellow-500/30 text-yellow-400' : 'border-gray-500/30 text-gray-500'
                                         }`}>
                                         {isCompleted ? 'Completed' : isSubmitted ? 'Under Review' : 'Pending'}
                                     </Badge>
