@@ -65,35 +65,35 @@ export default async function ProfilePage() {
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Hero Section */}
-            <div className="bg-gradient-to-r from-blue-900/40 to-cyan-900/20 rounded-2xl p-8 border border-white/10 flex flex-col md:flex-row items-center gap-8">
-                <Avatar className="size-32 border-4 border-cyan-500/30">
+            <div className="bg-gradient-to-r from-blue-900/40 to-cyan-900/20 rounded-2xl p-4 md:p-8 border border-white/10 flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                <Avatar className="size-24 md:size-32 border-4 border-cyan-500/30">
                     <AvatarImage src={user.image || ''} />
                     <AvatarFallback className="text-4xl font-bold bg-cyan-950 text-cyan-400">
                         {user.name?.[0] || 'U'}
                     </AvatarFallback>
                 </Avatar>
                 <div className="text-center md:text-left flex-1 space-y-2">
-                    <div className="flex items-center justify-center md:justify-start gap-4">
-                        <h1 className="text-3xl font-bold">{user.name}</h1>
+                    <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 md:gap-4">
+                        <h1 className="text-2xl md:text-3xl font-bold">{user.name}</h1>
                         <Badge variant="secondary" className="capitalize border-cyan-500/30 text-cyan-400">{user.role}</Badge>
                     </div>
-                    <p className="text-gray-400">{user.email}</p>
-                    <p className="text-sm text-gray-500">Joined {new Date(user.createdAt!).toLocaleDateString()}</p>
+                    <p className="text-gray-400 text-sm md:text-base">{user.email}</p>
+                    <p className="text-xs text-gray-500">Joined {new Date(user.createdAt!).toLocaleDateString()}</p>
                 </div>
                 {/* Quick Stats on Hero */}
-                <div className="flex gap-8 text-center bg-black/20 p-6 rounded-xl border border-white/5">
+                <div className="flex w-full md:w-auto justify-around md:justify-start gap-4 md:gap-8 text-center bg-black/20 p-4 md:p-6 rounded-xl border border-white/5">
                     <div>
-                        <div className="text-3xl font-black text-cyan-400">{user.xpPoints}</div>
-                        <div className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Total XP</div>
+                        <div className="text-2xl md:text-3xl font-black text-cyan-400">{user.xpPoints}</div>
+                        <div className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 font-semibold">Total XP</div>
                     </div>
                     <div>
-                        <div className="text-3xl font-black text-yellow-400">#{rank}</div>
-                        <div className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Global Rank</div>
+                        <div className="text-2xl md:text-3xl font-black text-yellow-400">#{rank}</div>
+                        <div className="text-[10px] md:text-xs uppercase tracking-wider text-gray-500 font-semibold">Global Rank</div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-8">
                 {/* Left Column: Stats & Events */}
                 <div className="md:col-span-2 space-y-8">
                     {/* Events List */}

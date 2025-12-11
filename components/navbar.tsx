@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Terminal } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 
 const navItems = [
     { name: 'Events', href: '/dashboard/events' },
@@ -17,6 +18,7 @@ const navItems = [
 
 export function Navbar() {
     const pathname = usePathname();
+    const { data: session } = useSession();
 
     return (
         <nav className="fixed top-0 w-full z-50 glass-panel border-b border-white/10">
@@ -52,16 +54,35 @@ export function Navbar() {
 
                     <div className="hidden md:block">
                         <div className="ml-4 flex items-center md:ml-6 gap-4">
-                            <Link href="/login">
-                                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
-                                    Login
-                                </Button>
-                            </Link>
-                            <Link href="/register">
-                                <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0">
-                                    Join Club
-                                </Button>
-                            </Link>
+                            {session?.user ? (
+                                <>
+                                    <Button
+                                        variant="ghost"
+                                        className="text-gray-300 hover:text-white hover:bg-white/10"
+                                        onClick={() => signOut()}
+                                    >
+                                        Logout
+                                    </Button>
+                                    <Link href="/dashboard">
+                                        <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0">
+                                            Dashboard
+                                        </Button>
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link href="/login">
+                                        <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10">
+                                            Login
+                                        </Button>
+                                    </Link>
+                                    <Link href="/register">
+                                        <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0">
+                                            Join Club
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
 
@@ -84,16 +105,35 @@ export function Navbar() {
                                         </Link>
                                     ))}
                                     <div className="h-px bg-white/10 my-2" />
-                                    <Link href="/login">
-                                        <Button variant="ghost" className="w-full justify-start text-gray-300">
-                                            Login
-                                        </Button>
-                                    </Link>
-                                    <Link href="/register">
-                                        <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                                            Join Club
-                                        </Button>
-                                    </Link>
+                                    {session?.user ? (
+                                        <>
+                                            <Button
+                                                variant="ghost"
+                                                className="w-full justify-start text-gray-300"
+                                                onClick={() => signOut()}
+                                            >
+                                                Logout
+                                            </Button>
+                                            <Link href="/dashboard">
+                                                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                                                    Dashboard
+                                                </Button>
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link href="/login">
+                                                <Button variant="ghost" className="w-full justify-start text-gray-300">
+                                                    Login
+                                                </Button>
+                                            </Link>
+                                            <Link href="/register">
+                                                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                                                    Join Club
+                                                </Button>
+                                            </Link>
+                                        </>
+                                    )}
                                 </div>
                             </SheetContent>
                         </Sheet>

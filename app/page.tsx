@@ -13,6 +13,7 @@ import { MagneticButton } from '@/components/ui/magnetic-button';
 import { TiltCard } from '@/components/ui/tilt-card';
 import { SpotlightCard } from '@/components/ui/spotlight-card';
 import { Timeline } from '@/components/ui/timeline';
+import { useSession } from 'next-auth/react';
 
 const events = [
   { title: 'Hacktoberfest', date: 'Oct', status: 'upcoming', type: 'Open Source' },
@@ -33,6 +34,7 @@ const domains = [
 ];
 
 export default function Home() {
+  const { data: session } = useSession();
   return (
     <div className="min-h-screen bg-transparent text-white selection:bg-neon-cyan/30 overflow-x-hidden font-sans">
       <AnimatedBackground />
@@ -80,14 +82,25 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-wrap gap-6"
             >
-              <Link href="/register">
-                <MagneticButton className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-blue-600 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-300" />
-                  <Button size="lg" className="relative bg-black hover:bg-black/80 text-white text-lg px-8 h-14 rounded-full border border-white/10">
-                    Join the Club
-                  </Button>
-                </MagneticButton>
-              </Link>
+              {session?.user ? (
+                <Link href="/dashboard">
+                  <MagneticButton className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-blue-600 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-300" />
+                    <Button size="lg" className="relative bg-black hover:bg-black/80 text-white text-lg px-8 h-14 rounded-full border border-white/10">
+                      Go to Dashboard
+                    </Button>
+                  </MagneticButton>
+                </Link>
+              ) : (
+                <Link href="/register">
+                  <MagneticButton className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan to-blue-600 rounded-full blur-md opacity-70 group-hover:opacity-100 transition duration-300" />
+                    <Button size="lg" className="relative bg-black hover:bg-black/80 text-white text-lg px-8 h-14 rounded-full border border-white/10">
+                      Join the Club
+                    </Button>
+                  </MagneticButton>
+                </Link>
+              )}
               <Link href="/dashboard/events">
                 <MagneticButton>
                   <Button size="lg" variant="ghost" className="text-lg px-8 h-14 rounded-full text-white hover:bg-white/5 border border-white/10 backdrop-blur-sm">

@@ -146,7 +146,7 @@ export const teamsRelations = relations(teams, ({ many }) => ({
     registrations: many(registrations),
 }));
 
-export const registrationsRelations = relations(registrations, ({ one }) => ({
+export const registrationsRelations = relations(registrations, ({ one, many }) => ({
     team: one(teams, {
         fields: [registrations.teamId],
         references: [teams.id],
@@ -155,7 +155,26 @@ export const registrationsRelations = relations(registrations, ({ one }) => ({
         fields: [registrations.userId],
         references: [users.id],
     }),
+    checkpoints: many(checkpoints),
+    event: one(events, {
+        fields: [registrations.eventId],
+        references: [events.id],
+    }),
 }));
 export const usersRelations = relations(users, ({ many }) => ({
     registrations: many(registrations),
+}));
+
+export const checkpointsRelations = relations(checkpoints, ({ one }) => ({
+    registration: one(registrations, {
+        fields: [checkpoints.registrationId],
+        references: [registrations.id],
+    }),
+}));
+
+export const roadmapsRelations = relations(roadmaps, ({ one }) => ({
+    event: one(events, {
+        fields: [roadmaps.eventId],
+        references: [events.id],
+    }),
 }));

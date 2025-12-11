@@ -17,15 +17,21 @@ import { Providers } from './providers';
 
 // ... imports
 
-export default function RootLayout({
+import { auth } from '@/auth';
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-[#0f0f0f] text-white selection:bg-cyan-500/30 selection:text-cyan-200`}>
-        <Providers>
+      <body
+        suppressHydrationWarning
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-[#0f0f0f] text-white selection:bg-cyan-500/30 selection:text-cyan-200`}
+      >
+        <Providers session={session}>
           {children}
         </Providers>
         <Toaster position="top-center" richColors theme="dark" />
