@@ -70,6 +70,16 @@ export default async function UserRoadmapPage({ params }: { params: Promise<{ sl
         where: roadmapQuery
     });
 
+    if (!roadmap) {
+        return (
+            <div className="max-w-4xl mx-auto py-12 text-center">
+                <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+                    <p className="text-gray-400">Roadmap not found or not yet published.</p>
+                </div>
+            </div>
+        );
+    }
+
     if (!registration) return redirect(`/dashboard/events/${slug}`); // Redirect to details if not registered
 
     // 3. Get User's Submissions (Checkpoints)

@@ -21,7 +21,7 @@ interface LegacyNote {
     content: string;
     role: string;
     tenure: string;
-    createdAt: string;
+    createdAt: string | Date | null;
     user: {
         name: string | null;
         image: string | null;
@@ -102,8 +102,8 @@ export function LegacyBoard({ notes, tenureOptions, currentUserId }: LegacyBoard
 
     // Sorting Logic
     const displayedNotes = notesByTenure[selectedTenure]?.sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime();
-        const dateB = new Date(b.createdAt).getTime();
+        const dateA = new Date(a.createdAt ?? 0).getTime();
+        const dateB = new Date(b.createdAt ?? 0).getTime();
         return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
     }) || [];
 
@@ -208,8 +208,8 @@ export function LegacyBoard({ notes, tenureOptions, currentUserId }: LegacyBoard
                             key={tenure}
                             onClick={() => setSelectedTenure(tenure)}
                             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${selectedTenure === tenure
-                                    ? 'bg-purple-600 text-white'
-                                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-purple-600 text-white'
+                                : 'text-gray-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             {tenure}
@@ -234,7 +234,7 @@ export function LegacyBoard({ notes, tenureOptions, currentUserId }: LegacyBoard
                                             {note.user.name}
                                         </CardTitle>
                                         <span className="text-xs text-gray-500 whitespace-nowrap">
-                                            {new Date(note.createdAt).toLocaleDateString()}
+                                            {new Date(note.createdAt ?? 0).toLocaleDateString()}
                                         </span>
                                     </div>
                                     <div className="flex gap-2 text-xs mt-1">
