@@ -3,27 +3,78 @@
 import { motion } from 'framer-motion';
 import { EventThemeKey } from '@/lib/themes-config';
 import React from 'react';
+import { cn } from '@/lib/utils';
 import { Github, GitBranch, GitCommit, GitPullRequest, Terminal, GitMerge } from 'lucide-react';
 
 const WinterBackground = () => (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a] to-black opacity-80" />
-        {[...Array(20)].map((_, i) => (
-            <motion.div
-                key={i}
-                initial={{ y: -100, x: Math.random() * 1000 }}
-                animate={{ y: 1200, rotate: 360 }}
-                transition={{
-                    duration: 10 + Math.random() * 10,
-                    repeat: Infinity,
-                    delay: Math.random() * 5,
-                    ease: "linear"
-                }}
-                className="absolute text-cyan-200/20 text-xl"
-            >
-                ❄
-            </motion.div>
-        ))}
+        {/* Dynamic Aurora Gradient */}
+        <motion.div
+            className="absolute inset-0 opacity-40 will-change-transform"
+            style={{
+                background: 'radial-gradient(circle at 50% -20%, #22d3ee 0%, #0c4a6e 20%, #020617 60%)',
+            }}
+            animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }}
+        />
+
+        {/* Secondary Shifting Aurora Layers */}
+        <motion.div
+            className="absolute -inset-[50%] opacity-30 blur-[100px] will-change-transform"
+            style={{
+                background: 'conic-gradient(from 0deg at 50% 50%, #020617 0deg, #0891b2 120deg, #020617 240deg)',
+            }}
+            animate={{
+                rotate: 360
+            }}
+            transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+            }}
+        />
+
+        {/* Heavy Snowfall Effect */}
+        {[...Array(100)].map((_, i) => {
+            const isLarge = i % 5 === 0; // 20% large flakes
+            const duration = isLarge ? 10 + Math.random() * 5 : 20 + Math.random() * 15;
+
+            return (
+                <motion.div
+                    key={`snow-heavy-${i}`}
+                    style={{
+                        left: `${Math.random() * 100}%`,
+                        top: -50 // Start position for layout
+                    }}
+                    animate={{
+                        y: ["0vh", "120vh"],
+                        x: [0, Math.random() * 40 - 20],
+                        opacity: [0, isLarge ? 1 : 0.6, isLarge ? 1 : 0.6, 0]
+                    }}
+                    transition={{
+                        duration: duration,
+                        repeat: Infinity,
+                        delay: -Math.random() * 20, // Immediate presence
+                        ease: "linear"
+                    }}
+                    className={cn(
+                        "absolute rounded-full bg-white",
+                        isLarge ? "w-2 h-2 blur-[1px] z-10" : "w-1 h-1 blur-[0.5px] opacity-60"
+                    )}
+                // Shadow inline if needed, or via class
+                />
+            );
+        })}
+
+        {/* Vignette Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#020617_100%)] pointer-events-none" />
     </div>
 );
 
@@ -37,7 +88,7 @@ const HacktoberfestBackground = () => (
                 initial={{ y: 1000, x: Math.random() * 1500, opacity: 0 }}
                 animate={{ y: -200, opacity: [0, 0.8, 0] }}
                 transition={{
-                    duration: 10 + Math.random() * 10,
+                    duration: 100 + Math.random() * 10,
                     repeat: Infinity,
                     delay: Math.random() * 5,
                     ease: "linear"

@@ -109,3 +109,10 @@ export async function getAdminStats() {
         pendingApprovals: pendingRegsData?.count || 0
     };
 }
+
+/**
+ * Fetches all events for the public events log.
+ */
+export async function getEvents() {
+    return await db.select().from(events).orderBy(desc(events.createdAt));
+}

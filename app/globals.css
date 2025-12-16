@@ -145,3 +145,140 @@ h6 {
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+/* --- Theme Animations --- */
+
+/* 1. Aurora / Gradient Animation (Default/Winter) */
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-aurora {
+  background-size: 200% 200%;
+  animation: aurora 10s ease infinite;
+}
+
+/* 2. Winter Storm (Snow + Aurora) */
+@keyframes snow-fall {
+  0% {
+    background-position: 0px 0px, 0px 0px, 0px 0px;
+  }
+
+  100% {
+    background-position: 500px 1000px, 400px 400px, 300px 300px;
+  }
+}
+
+@keyframes aurora-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-winter-storm {
+  /* Three layers of snow with different sizes/speeds */
+  background-image:
+    radial-gradient(4px 4px at 100px 50px, #fff, transparent),
+    radial-gradient(6px 6px at 200px 150px, #a5f3fc, transparent),
+    radial-gradient(3px 3px at 300px 250px, #fff, transparent),
+    linear-gradient(to bottom, #020617, #0f172a, #1e293b);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 100% 100%;
+  animation: snow-fall 20s linear infinite;
+}
+
+.animate-winter-aurora {
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.1) 0%, transparent 20%),
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
+    linear-gradient(to bottom, #020617 0%, #0f172a 100%);
+  background-size: 200% 200%, 100% 100%, 100% 100%;
+  animation: aurora-shift 15s ease infinite;
+}
+
+/* 3. Glitch / Cyberpunk (Hacktoberfest) */
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+
+  20% {
+    transform: skew(-2deg);
+  }
+
+  40% {
+    transform: skew(2deg);
+  }
+
+  60% {
+    transform: skew(0deg);
+  }
+
+  80% {
+    transform: skew(-1deg);
+  }
+
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+.animate-glitch {
+  animation: glitch-skew 2s infinite linear alternate-reverse;
+}
+
+/* 4. Heat Shimmer (Summer) */
+@keyframes heat {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02);
+  }
+
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+.animate-heat-pulse {
+  animation: heat 4s ease-in-out infinite;
+}
+
+/* 5. Matrix / Terminal Blink (CP) */
+@keyframes terminal-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-cursor-blink {
+  animation: terminal-blink 1s step-end infinite;
+}

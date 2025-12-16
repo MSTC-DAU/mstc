@@ -10,12 +10,14 @@ import { updateEventSettings } from '@/app/actions/event-settings';
 import { toast } from 'sonner';
 import { RichTextEditor } from './rich-text-editor';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
+import { ThemeSelector } from '@/components/admin/theme-selector';
 import { Palette } from 'lucide-react';
 
 export function EditEventSettings({ event }: { event: any }) {
     const [loading, setLoading] = useState(false);
     const [description, setDescription] = useState(event.description || '');
     const [rules, setRules] = useState(event.rules || '');
+    const [theme, setTheme] = useState(event.theme || 'default');
 
     async function handleSubmit(formData: FormData) {
         setLoading(true);
@@ -85,19 +87,8 @@ export function EditEventSettings({ event }: { event: any }) {
             <div className="space-y-4 pt-4 border-t border-white/10">
                 <div className="space-y-2">
                     <Label>Event Theme</Label>
-                    <Select name="theme" defaultValue={event.theme || 'default'}>
-                        <SelectTrigger className="bg-black/20 focus:ring-cyan-500/20 transition-all">
-                            <div className="flex items-center gap-2">
-                                <Palette className="size-4 text-gray-500" />
-                                <SelectValue placeholder="Select theme..." />
-                            </div>
-                        </SelectTrigger>
-                        <SelectContent>
-                            {Object.entries(EVENT_THEME_CONFIG).map(([key, theme]) => (
-                                <SelectItem key={key} value={key}>{theme.name}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <label className="text-sm font-medium">Event Theme</label>
+                    <ThemeSelector value={theme} onChange={setTheme} name="theme" />
                 </div>
 
                 <div className="space-y-2">

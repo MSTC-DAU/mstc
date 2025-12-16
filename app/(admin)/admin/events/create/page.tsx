@@ -11,6 +11,7 @@ import { createEvent } from '@/app/actions/events';
 import { useFormStatus } from 'react-dom';
 import { StringListInput } from '@/components/ui/string-list-input';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
+import { ThemeSelector } from '@/components/admin/theme-selector';
 import { Palette } from 'lucide-react';
 
 import {
@@ -89,19 +90,8 @@ export default function CreateEventPage() {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-300">Event Theme</label>
-                            <Select name="theme" defaultValue="default">
-                                <SelectTrigger className="bg-white/5 border-white/10 focus:ring-cyan-500/20 transition-all">
-                                    <div className="flex items-center gap-2">
-                                        <Palette className="size-4 text-gray-500" />
-                                        <SelectValue placeholder="Select theme..." />
-                                    </div>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {Object.entries(EVENT_THEME_CONFIG).map(([key, theme]) => (
-                                        <SelectItem key={key} value={key}>{theme.name}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <label className="text-sm font-medium text-gray-300">Event Theme</label>
+                            <ThemeSelector name="theme" />
                         </div>
 
                         <div className="space-y-2">

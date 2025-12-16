@@ -5,41 +5,14 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { ClientOnlyShards } from './client-only-shards';
 
 export function OrigamiHero() {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#202124] pt-20">
 
             {/* 1. Floating Shards (Decoration) */}
-            {Array.from({ length: 15 }).map((_, i) => (
-                <motion.div
-                    key={i}
-                    className={cn(
-                        "absolute opacity-20",
-                        i % 2 === 0 ? "bg-black" : "bg-shatter-yellow"
-                    )}
-                    initial={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        scale: 0,
-                        rotate: 0
-                    }}
-                    animate={{
-                        y: [0, Math.random() * 50 - 25],
-                        rotate: [0, 180],
-                        scale: [0.5, 1, 0.5]
-                    }}
-                    transition={{
-                        duration: 5 + Math.random() * 5,
-                        repeat: Infinity
-                    }}
-                    style={{
-                        width: Math.random() * 50 + 20,
-                        height: Math.random() * 50 + 20,
-                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)'
-                    }}
-                />
-            ))}
+            <ClientOnlyShards />
 
             <div className="container relative z-10 flex flex-col items-center text-center px-4">
 
