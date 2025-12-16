@@ -7,13 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { updateEventSettings } from '@/app/actions/event-settings';
+import { deleteEvent } from '@/app/actions/events';
 import { toast } from 'sonner';
 import { RichTextEditor } from './rich-text-editor';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
 import { ThemeSelector } from '@/components/admin/theme-selector';
 import { Palette } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export function EditEventSettings({ event }: { event: any }) {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [description, setDescription] = useState(event.description || '');
     const [rules, setRules] = useState(event.rules || '');
@@ -109,6 +112,37 @@ export function EditEventSettings({ event }: { event: any }) {
                         onChange={setRules}
                     />
                     <input type="hidden" name="rules" value={rules} />
+                </div>
+            </div>
+
+            <div className="pt-8 mt-8 border-t border-red-900/30">
+                <div className="bg-red-950/10 border border-red-900/20 rounded-xl p-6">
+                    <h4 className="text-red-500 font-bold mb-2 flex items-center gap-2">
+                        <Palette className="size-4" /> Danger Zone
+                    </h4>
+                    <p className="text-sm text-red-400/60 mb-4">
+                        Deleting an event is irreversible. It will remove all registrations, teams, awards, and data associated with this event.
+                    </p>
+                    <Button
+                        type="button"
+                        variant="destructive"
+                        className="bg-red-950 hover:bg-red-900 text-red-500 border border-red-900/50"
+                        onClick={async () => {
+                            if (window.confirm('ARE YOU SURE? This action cannot be undone. Type "DELETE" to confirm (just clicking OK for now).')) {
+                                setLoading(true); // Reuse loading state or local
+                                const res = await deleteEvent(event.id);
+                                if (res.success) {
+                                    toast.success(res.message);
+                                    router.push('/admin/events');
+                                } else {
+                                    toast.error(res.message);
+                                    setLoading(false);
+                                }
+                            }
+                        }}
+                    >
+                        Delete Entire Event
+                    </Button>
                 </div>
             </div>
 

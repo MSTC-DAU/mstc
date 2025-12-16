@@ -56,25 +56,62 @@ export function EventControlCenter({ event, theme, isRegistered, awards, childre
                         )}
                     </div>
                 );
-            case 'awards':
+            case 'awards': {
+                // Group awards by category
+                const groupedAwards = awards.reduce((acc: any, award: any) => {
+                    const cat = award.category || 'Overall';
+                    if (!acc[cat]) acc[cat] = [];
+                    acc[cat].push(award);
+                    return acc;
+                }, {});
+
                 return (
                     <div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                         <div className="flex items-center gap-2 md:gap-4 text-yellow-400 mb-2">
                             <Trophy className="size-6 md:size-8" />
                             <h2 className="text-xl md:text-3xl font-black italic uppercase tracking-tighter">Hall of Fame</h2>
                         </div>
-                        <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                        <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                             {awards.length === 0 ? (
                                 <p className="text-gray-500 italic">No records found yet.</p>
                             ) : (
-                                awards.map((award: any) => (
-                                    <div key={award.id} className="bg-white/5 border border-white/10 p-4 rounded-none flex items-center gap-4">
-                                        <div className="size-10 bg-yellow-500 text-black font-black flex items-center justify-center rounded-full shrink-0">
-                                            #{award.rank}
-                                        </div>
-                                        <div>
-                                            <div className="font-bold text-white uppercase">{award.title}</div>
-                                            <div className="text-xs text-gray-400">{award.team?.name || award.user?.name}</div>
+                                Object.entries(groupedAwards).map(([category, categoryAwards]: [string, any]) => (
+                                    <div key={category} className="space-y-4">
+                                        <h3 className="text-sm font-black uppercase text-cyan-500 tracking-widest border-b border-white/10 pb-2 mb-4">
+                                            {category}
+                                        </h3>
+                                        <div className="space-y-3">
+                                            {categoryAwards.map((award: any) => {
+                                                // Rank Colors
+                                                let rankColor = "bg-gray-700 text-white";
+                                                let textColor = "text-white";
+
+                                                if (award.rank === 1) {
+                                                    rankColor = "bg-yellow-400 text-black shadow-[0_0_15px_rgba(250,204,21,0.5)]";
+                                                    textColor = "text-yellow-400";
+                                                } else if (award.rank === 2) {
+                                                    rankColor = "bg-slate-300 text-black shadow-[0_0_15px_rgba(203,213,225,0.5)]";
+                                                    textColor = "text-slate-300";
+                                                } else if (award.rank === 3) {
+                                                    rankColor = "bg-amber-700 text-white shadow-[0_0_15px_rgba(180,83,9,0.5)]";
+                                                    textColor = "text-amber-600";
+                                                }
+
+                                                return (
+                                                    <div key={award.id} className="bg-white/5 border border-white/10 p-4 rounded-none flex items-center gap-4 hover:bg-white/10 transition-colors">
+                                                        <div className={cn("size-10 font-black flex items-center justify-center rounded-full shrink-0", rankColor)}>
+                                                            #{award.rank}
+                                                        </div>
+                                                        <div>
+                                                            <div className={cn("font-bold uppercase text-lg", textColor)}>{award.title}</div>
+                                                            <div className="text-xs text-gray-400 font-mono">
+                                                                {award.team ? `TEAM: ${award.team.name}` : `USER: ${award.user?.name}`}
+                                                            </div>
+                                                            {award.description && <div className="text-xs text-gray-500 mt-1 italic">"{award.description}"</div>}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 ))
@@ -82,6 +119,7 @@ export function EventControlCenter({ event, theme, isRegistered, awards, childre
                         </div>
                     </div>
                 );
+            }
             case 'registration':
             default:
                 return (

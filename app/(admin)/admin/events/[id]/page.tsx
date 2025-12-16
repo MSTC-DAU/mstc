@@ -10,6 +10,7 @@ import { EditEventSettings } from '@/components/admin/edit-event-settings';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { RegistrationDetailsDialog } from '@/components/admin/registration-details-dialog';
+import { DeleteParticipantButton } from '@/components/admin/delete-participant-button';
 
 export default async function AdminEventDetailPage({ params }: { params: Promise<{ id: string }> }) {
     // Await params for Next.js 15+ compatibility
@@ -126,6 +127,7 @@ export default async function AdminEventDetailPage({ params }: { params: Promise
                                 <th className="px-6 py-3">Team</th>
                                 <th className="px-6 py-3">Status</th>
                                 <th className="px-6 py-3">Date</th>
+                                <th className="px-6 py-3 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/10 text-gray-300">
@@ -161,6 +163,9 @@ export default async function AdminEventDetailPage({ params }: { params: Promise
                                         </td>
                                         <td className="px-6 py-4 text-gray-500">
                                             {row.reg.createdAt ? new Date(row.reg.createdAt).toLocaleDateString() : 'N/A'}
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <DeleteParticipantButton registrationId={row.reg.id} name={row.user?.name || 'Unknown'} />
                                         </td>
                                     </tr>
                                 ))

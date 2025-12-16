@@ -135,6 +135,7 @@ export const eventAwards = pgTable('event_awards', {
     title: text('title').notNull(), // e.g. "Winner", "Best UI"
     rank: integer('rank').notNull(), // 1, 2, 3
     description: text('description'),
+    category: text('category'), // e.g. "Web", "App", "Design"
     createdAt: timestamp('created_at').defaultNow(),
 });
 

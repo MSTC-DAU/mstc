@@ -54,28 +54,50 @@ export default async function AwardsPage({ params }: { params: Promise<{ id: str
                 </Card>
 
                 {/* Current Winners List */}
-                <div className="space-y-4">
+                {/* Current Winners List */}
+                <div className="space-y-8">
                     <h3 className="text-xl font-bold">Hall of Fame</h3>
                     {awards.length === 0 ? (
                         <p className="text-gray-500 italic">No awards assigned yet.</p>
                     ) : (
-                        awards.map((award) => (
-                            <Card key={award.id} className="bg-gradient-to-r from-yellow-900/10 to-transparent border-yellow-500/20">
-                                <CardContent className="p-4 flex items-center justify-between">
-                                    <div className="flex items-center gap-4">
-                                        <div className="size-10 bg-yellow-500/20 text-yellow-500 rounded-full flex items-center justify-center font-bold text-lg">
-                                            {award.rank}
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-yellow-100">{award.title}</h4>
-                                            <p className="text-sm text-gray-400">
-                                                {award.team ? `Team ${award.team.name}` : award.user?.name}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <RemoveAwardButton awardId={award.id} eventId={id} />
-                                </CardContent>
-                            </Card>
+                        Object.entries(awards.reduce((acc, award) => {
+                            const cat = award.category || 'Overall';
+                            if (!acc[cat]) acc[cat] = [];
+                            acc[cat].push(award);
+                            return acc;
+                        }, {} as Record<string, typeof awards>)).map(([category, categoryAwards]) => (
+                            <div key={category} className="space-y-4">
+                                <h4 className="text-lg font-semibold uppercase tracking-wider text-cyan-500 border-b border-white/10 pb-2">{category}</h4>
+                                <div className="grid gap-4">
+                                    {categoryAwards.map((award) => {
+                                        // Dynamic Colors based on Rank
+                                        const rankColors = {
+                                            1: 'from-yellow-900/10 to-transparent border-yellow-500/20 text-yellow-500 bg-yellow-500/10',
+                                            2: 'from-slate-800/20 to-transparent border-slate-400/20 text-slate-300 bg-slate-400/10', // Silver
+                                            3: 'from-orange-900/10 to-transparent border-orange-700/20 text-orange-600 bg-orange-700/10', // Bronze
+                                        }[award.rank] || 'from-blue-900/10 to-transparent border-blue-500/20 text-blue-400 bg-blue-500/10'; // Default
+
+                                        return (
+                                            <Card key={award.id} className={`bg-gradient-to-r ${rankColors}`}>
+                                                <CardContent className="p-4 flex items-center justify-between">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className={`size-10 rounded-full flex items-center justify-center font-bold text-lg border ${rankColors.split(' ')[2]} ${rankColors.split(' ')[3]}`}>
+                                                            {award.rank}
+                                                        </div>
+                                                        <div>
+                                                            <h4 className={`font-bold ${rankColors.split(' ')[3].replace('bg-', 'text-').replace('/10', '')}`}>{award.title}</h4>
+                                                            <p className="text-sm text-gray-400">
+                                                                {award.team ? `Team ${award.team.name}` : award.user?.name}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <RemoveAwardButton awardId={award.id} eventId={id} />
+                                                </CardContent>
+                                            </Card>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         ))
                     )}
                 </div>

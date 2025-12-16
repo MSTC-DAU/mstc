@@ -16,7 +16,7 @@ async function canManageAwards() {
     return user && ['convener', 'deputy_convener', 'core_member'].includes(user.role || '');
 }
 
-export async function assignAward(eventId: string, title: string, rank: number, teamId?: string, userId?: string, description?: string) {
+export async function assignAward(eventId: string, title: string, rank: number, teamId?: string, userId?: string, description?: string, category?: string) {
     if (!await canManageAwards()) return { success: false, message: "Unauthorized" };
 
     try {
@@ -26,7 +26,8 @@ export async function assignAward(eventId: string, title: string, rank: number, 
             rank,
             teamId, // One of these should be set if using TS properly, but we passed undefined.
             userId,
-            description
+            description,
+            category: category || 'Overall' // Default to Overall
         });
 
         revalidatePath(`/admin/events/${eventId}/awards`);

@@ -2,7 +2,7 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { registrations, teams, events, users } from '@/db/schema'; // Added events, users
+import { registrations, teams, events, users, checkpoints } from '@/db/schema'; // Added events, users
 import { eq, and } from 'drizzle-orm'; // Added eq, and
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
@@ -161,5 +161,32 @@ export async function assignDomain(registrationId: string, domain: string) {
     } catch (e) {
         console.error(e);
         return { message: 'Failed to assign domain', success: false };
+    }
+}
+
+export async function removeParticipant(registrationId: string) {
+    const session = await auth();
+    if (!session?.user?.id) return { message: 'Unauthorized', success: false };
+
+    const user = await db.query.users.findFirst({
+        where: eq(users.id, session.user.id)
+    });
+
+    if (user?.role !== 'convener') {
+        return { message: 'Unauthorized: Only Conveners can remove participants.', success: false };
+    }
+
+    try {
+        // 1. Delete their checkpoints first
+        await db.delete(checkpoints).where(eq(checkpoints.registrationId, registrationId));
+
+        // 2. Delete the registration
+        await db.delete(registrations).where(eq(registrations.id, registrationId));
+
+        revalidatePath('/admin/events');
+        return { message: 'Participant removed successfully', success: true };
+    } catch (e) {
+        console.error('Remove participant error:', e);
+        return { message: 'Failed to remove participant', success: false };
     }
 }

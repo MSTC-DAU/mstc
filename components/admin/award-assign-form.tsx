@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 
 export function AwardAssignForm({ eventId, teams, users }: { eventId: string, teams: any[], users: any[] }) {
     const [title, setTitle] = useState('Winner');
+    const [category, setCategory] = useState('');
     const [rank, setRank] = useState('1');
     const [recipientType, setRecipientType] = useState<'team' | 'user'>('team');
     const [selectedRecipient, setSelectedRecipient] = useState('');
@@ -25,12 +26,13 @@ export function AwardAssignForm({ eventId, teams, users }: { eventId: string, te
         const teamId = recipientType === 'team' ? selectedRecipient : undefined;
         const userId = recipientType === 'user' ? selectedRecipient : undefined;
 
-        const res = await assignAward(eventId, title, parseInt(rank), teamId, userId);
+        const res = await assignAward(eventId, title, parseInt(rank), teamId, userId, undefined, category);
         setLoading(false);
 
         if (res.success) {
             toast.success(res.message);
             setSelectedRecipient('');
+            setCategory('');
         } else {
             toast.error(res.message);
         }
@@ -41,6 +43,11 @@ export function AwardAssignForm({ eventId, teams, users }: { eventId: string, te
             <div className="space-y-2">
                 <Label>Award Title</Label>
                 <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. 1st Place, Best Design" />
+            </div>
+
+            <div className="space-y-2">
+                <Label>Category</Label>
+                <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="e.g. Web Dev, App Dev (Optional)" />
             </div>
 
             <div className="space-y-2">
