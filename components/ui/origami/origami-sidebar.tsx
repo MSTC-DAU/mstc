@@ -36,9 +36,13 @@ export function OrigamiSidebar() {
     const pathname = usePathname();
     const { data: session } = useSession();
 
+<<<<<<< HEAD
     const userRole = session?.user?.role;
     const adminRoles = ['convener', 'deputy_convener', 'core_member'];
     const isAdmin = userRole ? adminRoles.includes(userRole) : false;
+=======
+    const isAdmin = session?.user?.role && session.user.role !== 'student' && session.user.role !== 'member';
+>>>>>>> 1e61f08304928d5562db766842035a8f4792a5e3
 
     return (
         <>
@@ -103,8 +107,13 @@ export function OrigamiSidebar() {
                         </div>
                     </Link>
 
+<<<<<<< HEAD
                     <Link href="/" className="mb-2 w-full h-10 bg-[#303134] hover:bg-shatter-blue hover:text-white text-[#E8EAED] border-2 border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 shatter-shadow-sm block text-sm">
                         <ArrowLeft className="size-4" /> Back to Home
+=======
+                    <Link href="/" className="w-full h-12 bg-black hover:bg-shatter-yellow hover:text-black text-white border-2 border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 shatter-shadow-sm mb-4">
+                        <ArrowRight className="size-4 rotate-180" /> Back to Website
+>>>>>>> 1e61f08304928d5562db766842035a8f4792a5e3
                     </Link>
 
                     <button

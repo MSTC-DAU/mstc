@@ -51,7 +51,8 @@ export async function createEvent(prevState: any, formData: FormData) {
             endDate,
             registrationStartDate,
             registrationEndDate,
-            config: config // Use the parsed config directly
+            config: config, // Use the parsed config directly
+            timeline: formData.get('timeline') ? JSON.parse(formData.get('timeline') as string) : []
         }).returning({ id: events.id });
 
         if (availableDomains.length > 0 && newEvent) {

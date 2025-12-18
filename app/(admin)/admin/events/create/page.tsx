@@ -13,6 +13,7 @@ import { StringListInput } from '@/components/ui/string-list-input';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
 import { ThemeSelector } from '@/components/admin/theme-selector';
 import { Palette } from 'lucide-react';
+import { TimelineBuilder } from '@/components/admin/timeline-builder';
 
 import {
     Calendar,
@@ -43,6 +44,7 @@ export default function CreateEventPage() {
     const [domains, setDomains] = useState<string[]>([]);
     const [description, setDescription] = useState('');
     const [rules, setRules] = useState('');
+    const [timeline, setTimeline] = useState<any[]>([]);
     const [state, formAction] = useActionState(createEvent, initialState);
 
     // Auto-set maxTeamSize for solo events
@@ -175,6 +177,21 @@ export default function CreateEventPage() {
                                 <Input type="url" name="posterUrl" placeholder="https://example.com/poster.jpg" className="pl-10 bg-white/5 border-white/10 focus:border-cyan-500/50 focus:ring-cyan-500/20 transition-all" />
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Timeline Config */}
+                <div className="bg-black/40 border border-white/10 rounded-xl overflow-hidden backdrop-blur-sm shadow-xl">
+                    <div className="px-6 py-4 border-b border-white/10 bg-white/5">
+                        <h2 className="text-lg font-semibold flex items-center gap-2">
+                            <Clock className="size-5 text-orange-400" />
+                            Event Timeline
+                        </h2>
+                    </div>
+                    <div className="p-6">
+                        <p className="text-sm text-gray-400 mb-4">Define the key milestones for your event.</p>
+                        <TimelineBuilder value={timeline} onChange={setTimeline} />
+                        <input type="hidden" name="timeline" value={JSON.stringify(timeline)} />
                     </div>
                 </div>
 

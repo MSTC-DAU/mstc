@@ -69,11 +69,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ sl
 
                     {/* Back Button & Badges */}
                     <div className="absolute top-0 left-4 z-20 flex items-center gap-4">
-                        <Link href="/dashboard/events">
-                            <Button variant="ghost" className="text-gray-400 hover:text-white hover:bg-white/5 uppercase tracking-widest font-bold text-xs md:text-sm">
+                        <Button variant="ghost" asChild className="text-gray-400 hover:text-white hover:bg-white/5 uppercase tracking-widest font-bold text-xs md:text-sm">
+                            <Link href="/dashboard/events">
                                 &larr; Back to Log
-                            </Button>
-                        </Link>
+                            </Link>
+                        </Button>
                     </div>
 
                     <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center w-full px-4 mt-8">

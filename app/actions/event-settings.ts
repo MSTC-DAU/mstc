@@ -43,7 +43,8 @@ export async function updateEventSettings(eventId: string, formData: FormData) {
                 posterUrl,
                 theme,
                 description,
-                rules
+                rules,
+                timeline: formData.get('timeline') ? JSON.parse(formData.get('timeline') as string) : undefined
             })
             .where(eq(events.id, eventId));
 

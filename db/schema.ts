@@ -78,6 +78,12 @@ export const events = pgTable('events', {
         registrationFields?: Array<{ name: string; label: string; type: string; }>;
         availableDomains?: string[];
     }>(),
+    timeline: jsonb('timeline').$type<Array<{
+        title: string;
+        description: string;
+        startDate: string; // ISO string
+        endDate: string; // ISO string
+    }>>(),
     createdAt: timestamp('created_at').defaultNow(),
 });
 

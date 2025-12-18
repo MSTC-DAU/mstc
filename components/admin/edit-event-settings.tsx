@@ -12,8 +12,9 @@ import { toast } from 'sonner';
 import { RichTextEditor } from './rich-text-editor';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
 import { ThemeSelector } from '@/components/admin/theme-selector';
-import { Palette } from 'lucide-react';
+import { Palette, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { TimelineBuilder } from './timeline-builder';
 
 export function EditEventSettings({ event }: { event: any }) {
     const router = useRouter();
@@ -21,6 +22,7 @@ export function EditEventSettings({ event }: { event: any }) {
     const [description, setDescription] = useState(event.description || '');
     const [rules, setRules] = useState(event.rules || '');
     const [theme, setTheme] = useState(event.theme || 'default');
+    const [timeline, setTimeline] = useState(event.timeline || []);
 
     async function handleSubmit(formData: FormData) {
         setLoading(true);
@@ -113,6 +115,14 @@ export function EditEventSettings({ event }: { event: any }) {
                     />
                     <input type="hidden" name="rules" value={rules} />
                 </div>
+
+                <div className="space-y-2 pt-4 border-t border-white/10">
+                    <Label className="text-lg font-semibold text-orange-400 flex items-center gap-2">
+                        <Clock className="size-5" /> Timeline
+                    </Label>
+                    <TimelineBuilder value={timeline} onChange={setTimeline} />
+                    <input type="hidden" name="timeline" value={JSON.stringify(timeline)} />
+                </div>
             </div>
 
             <div className="pt-8 mt-8 border-t border-red-900/30">
@@ -146,6 +156,6 @@ export function EditEventSettings({ event }: { event: any }) {
                 </div>
             </div>
 
-        </form >
+        </form>
     );
 }

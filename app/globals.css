@@ -282,3 +282,27 @@ h6 {
 .animate-cursor-blink {
   animation: terminal-blink 1s step-end infinite;
 }
+
+/* Custom Thin Black Scrollbar */
+.scrollbar-thin-black {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 transparent;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 0px;
+}
+
+.scrollbar-thin-black::-webkit-scrollbar-thumb:hover {
+  background: #333333;
+}
