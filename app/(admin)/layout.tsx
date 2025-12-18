@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Calendar, LayoutDashboard, Users, Settings, Trophy, LogOut, Terminal, ArrowRight, ShieldAlert } from 'lucide-react';
+import { Calendar, LayoutDashboard, Users, Settings, Trophy, LogOut, Terminal, ArrowRight, ShieldAlert, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ShatterBackground } from '@/components/ui/shatter-background';
 import { signOut } from 'next-auth/react';
@@ -77,6 +77,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <p className="text-[10px] text-[#9AA0A6] font-mono">ROOT_ACCESS_GRANTED</p>
                         </div>
                     </div>
+
+                    <Link href="/dashboard" className="mb-2 w-full h-12 bg-black hover:bg-shatter-yellow hover:text-black text-[#E8EAED] border-2 border-white/20 hover:border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
+                        <ArrowLeft className="size-4" /> Back to Dash
+                    </Link>
 
                     <button
                         onClick={() => signOut()}

@@ -16,7 +16,8 @@ import {
     Menu,
     X,
     ChevronRight,
-    ArrowRight
+    ArrowRight,
+    ArrowLeft
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
@@ -35,7 +36,9 @@ export function OrigamiSidebar() {
     const pathname = usePathname();
     const { data: session } = useSession();
 
-    const isAdmin = true; // Use real RBAC in prod
+    const userRole = session?.user?.role;
+    const adminRoles = ['convener', 'deputy_convener', 'core_member'];
+    const isAdmin = userRole ? adminRoles.includes(userRole) : false;
 
     return (
         <>
@@ -90,7 +93,7 @@ export function OrigamiSidebar() {
 
                 {/* Footer */}
                 <div className="p-6 border-t-4 border-black bg-[#202124]">
-                    <Link href="/dashboard/profile" className="flex items-center gap-3 mb-6 bg-[#303134] p-2 border-2 border-black hover:bg-shatter-yellow transition-colors group cursor-pointer block">
+                    <Link href="/dashboard/profile" className="flex items-center gap-3 mb-4 bg-[#303134] p-2 border-2 border-black hover:bg-shatter-yellow transition-colors group cursor-pointer block">
                         <div className="size-10 bg-black text-white flex items-center justify-center font-black border border-black group-hover:bg-white group-hover:text-black transition-colors">
                             {session?.user?.name?.[0] || 'U'}
                         </div>
@@ -98,6 +101,10 @@ export function OrigamiSidebar() {
                             <p className="text-sm font-black text-[#E8EAED] uppercase truncate group-hover:text-black">{session?.user?.name || 'OPERATIVE'}</p>
                             <p className="text-xs text-[#9AA0A6] font-mono truncate group-hover:text-black">LEVEL_01</p>
                         </div>
+                    </Link>
+
+                    <Link href="/" className="mb-2 w-full h-10 bg-[#303134] hover:bg-shatter-blue hover:text-white text-[#E8EAED] border-2 border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2 shatter-shadow-sm block text-sm">
+                        <ArrowLeft className="size-4" /> Back to Home
                     </Link>
 
                     <button
@@ -148,6 +155,10 @@ export function OrigamiSidebar() {
                                 <p className="text-lg font-black text-[#E8EAED] uppercase truncate group-active:text-black">{session?.user?.name || 'OPERATIVE'}</p>
                                 <p className="text-sm text-[#9AA0A6] font-mono truncate group-active:text-black">LEVEL_01</p>
                             </div>
+                        </Link>
+
+                        <Link href="/" onClick={() => setMobileOpen(false)} className="w-full h-14 bg-[#303134] text-[#E8EAED] font-black uppercase tracking-widest text-lg border-2 border-black active:bg-shatter-blue active:text-white transition-colors flex items-center justify-center gap-2">
+                            <ArrowLeft className="size-5" /> Back to Home
                         </Link>
 
                         <button

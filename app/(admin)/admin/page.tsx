@@ -2,10 +2,20 @@ import { getAdminStats } from "@/lib/data-fetching";
 import { FoldCard } from "@/components/ui/origami/fold-card";
 import { Users, Calendar, Trophy, Activity, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
+    const session = await auth();
+    const userRole = session?.user?.role;
+    const adminRoles = ['convener', 'deputy_convener', 'core_member'];
+
+    if (!userRole || !adminRoles.includes(userRole)) {
+        redirect('/dashboard');
+    }
+
     const stats = await getAdminStats();
 
     return (
