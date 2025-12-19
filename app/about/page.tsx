@@ -1,7 +1,6 @@
 import { OrigamiNavbar } from '@/components/ui/origami/origami-navbar';
 import { FoldCard } from '@/components/ui/origami/fold-card';
-import { Terminal, Users, Rocket, Code2, Zap } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Linkedin, Instagram, Twitter, Facebook, Github, Terminal } from 'lucide-react';
 
 export default function AboutPage() {
     return (
@@ -9,113 +8,135 @@ export default function AboutPage() {
             <OrigamiNavbar />
 
             <main className="pt-48 pb-16 px-4 md:px-8 max-w-7xl mx-auto space-y-32">
-                {/* Hero Section */}
-                <div className="text-center space-y-8 max-w-4xl mx-auto relative">
-                    {/* Decorative Elements */}
-                    <div className="absolute top-0 left-10 size-4 bg-shatter-pink animate-spin-slow" />
-                    <div className="absolute bottom-10 right-10 size-6 border-2 border-shatter-yellow rotate-12" />
-
-                    <div className="inline-block bg-shatter-yellow border-2 border-black transform -rotate-2 shadow-[4px_4px_0px_black]">
-                        <span className="block px-4 py-1 text-black font-black uppercase tracking-widest text-sm transform rotate-2">
-                            Est. 2023 // MSTC DAU
-                        </span>
+                {/* About MSTC Section */}
+                <div className="text-center space-y-12 max-w-5xl mx-auto relative">
+                    <div className="space-y-6">
+                        <div className="inline-block bg-shatter-yellow border-2 border-black transform -rotate-2 shadow-[4px_4px_0px_black] mb-6">
+                            <span className="block px-4 py-1 text-black font-black uppercase tracking-widest text-sm transform rotate-2">
+                                Student-Led • Tech-Driven
+                            </span>
+                        </div>
+                        <h1 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter text-[#E8EAED] leading-[0.95] drop-shadow-lg">
+                            About <span className="text-shatter-yellow">MSTC</span>
+                        </h1>
                     </div>
 
-                    <h1 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter text-[#E8EAED] leading-[0.95] drop-shadow-lg">
-                        We Don't Just Code. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8EAED] via-[#E8EAED] to-[#9AA0A6]">We Build The</span> <span className="text-shatter-pink">Future.</span>
-                    </h1>
+                    <div className="text-xl md:text-2xl text-[#9AA0A6] font-medium leading-relaxed text-left space-y-6 bg-[#303134] p-8 md:p-12 border-2 border-black shadow-[8px_8px_0px_black] relative">
+                        {/* Decorators */}
+                        <div className="absolute -top-3 -left-3 size-6 bg-shatter-pink border-2 border-black" />
+                        <div className="absolute -bottom-3 -right-3 size-6 bg-shatter-yellow border-2 border-black" />
 
-                    <p className="text-xl md:text-2xl text-[#9AA0A6] font-bold max-w-2xl mx-auto leading-relaxed">
-                        The Microsoft Student Technical Club is a community of <span className="bg-black text-[#E8EAED] px-1">visionaries</span>. We bridge the gap between classroom theory and industry-shattering impact.
+                        <p>
+                            <span className="text-[#E8EAED] font-bold">Microsoft Student Technical Club (MSTC)</span> at Dhirubhai Ambani University, Gandhinagar is a student-led tech community built by and for curious learners.
+                        </p>
+                        <p>
+                            We bring together students from diverse technical backgrounds — web development (MERN, Django, Spring Boot), app development, blockchain, game development, system programming, C++, DSA, competitive programming, AI, and ML.
+                        </p>
+                        <p>
+                            At MSTC, we don't limit ourselves to a single technology or domain. Our focus is on learning by building, exploring different fields, and helping students grow into confident developers and problem-solvers.
+                        </p>
+                        <p>
+                            We aim to create an environment where students can experiment with ideas, collaborate with peers, and gradually bridge the gap between classroom learning and real-world applications.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Goals Section */}
+                <div className="space-y-16">
+                    <h2 className="text-4xl md:text-6xl font-black uppercase italic text-[#E8EAED] tracking-tighter text-center">
+                        Our <span className="text-shatter-pink">Goals</span>
+                    </h2>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {GOALS.map((goal, idx) => (
+                            <FoldCard key={idx} accent={idx % 2 === 0 ? "blue" : "flame"} className="h-full bg-[#303134] hover:bg-black group transition-colors duration-300">
+                                <div className="p-6 h-full flex items-start gap-4">
+                                    <Terminal className={`size-6 shrink-0 ${idx % 2 === 0 ? 'text-shatter-yellow' : 'text-shatter-pink'} mt-1`} />
+                                    <p className="text-[#E8EAED] font-medium text-lg leading-relaxed group-hover:text-white">
+                                        {goal}
+                                    </p>
+                                </div>
+                            </FoldCard>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Events Section */}
+                <div className="space-y-16">
+                    <h2 className="text-4xl md:text-6xl font-black uppercase italic text-[#E8EAED] tracking-tighter text-center">
+                        Events & <span className="text-shatter-yellow">Initiatives</span>
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {EVENTS.map((event, idx) => (
+                            <div key={idx} className="relative group">
+                                <div className="absolute inset-0 bg-black translate-x-2 translate-y-2 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform border-2 border-[#E8EAED]" />
+                                <div className="relative bg-[#303134] border-2 border-black p-8 h-full space-y-4 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
+                                    <h3 className="text-2xl font-black uppercase italic text-shatter-pink">{event.title}</h3>
+                                    <p className="text-[#9AA0A6] text-lg leading-relaxed">{event.description}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <p className="text-center text-[#E8EAED] text-lg max-w-3xl mx-auto mt-12 italic border-l-4 border-shatter-yellow pl-6 py-2 bg-[#ffffff05]">
+                        "The event we are currently conducting is development-focused, aimed at helping students strengthen practical building skills while complementing their DSA/CP journey."
                     </p>
                 </div>
 
-                {/* Mission & Vision Grid */}
-                <div className="grid md:grid-cols-3 gap-8">
-                    <FoldCard accent="blue" className="h-full bg-[#303134] hover:bg-black group transition-colors duration-300">
-                        <div className="p-8 space-y-4">
-                            <div className="size-16 bg-black border-2 border-shatter-yellow flex items-center justify-center shadow-[4px_4px_0px_black] group-hover:shadow-[4px_4px_0px_white] transition-shadow">
-                                <Terminal className="size-8 text-shatter-yellow" />
-                            </div>
-                            <h3 className="text-3xl font-black text-[#E8EAED] uppercase italic tracking-tight group-hover:text-white">Our Mission</h3>
-                            <p className="text-[#9AA0A6] font-medium leading-relaxed group-hover:text-[#E8EAED]">
-                                To empower students with the technical skills and mindset required to thrive in the modern tech industry through hands-on projects and mentorship.
-                            </p>
-                        </div>
-                    </FoldCard>
-
-                    <FoldCard accent="flame" className="h-full bg-[#303134] hover:bg-black group transition-colors duration-300 transform md:-translate-y-4">
-                        <div className="p-8 space-y-4">
-                            <div className="size-16 bg-black border-2 border-shatter-pink flex items-center justify-center shadow-[4px_4px_0px_black] group-hover:shadow-[4px_4px_0px_white] transition-shadow">
-                                <Users className="size-8 text-shatter-pink" />
-                            </div>
-                            <h3 className="text-3xl font-black text-[#E8EAED] uppercase italic tracking-tight group-hover:text-white">Our Community</h3>
-                            <p className="text-[#9AA0A6] font-medium leading-relaxed group-hover:text-[#E8EAED]">
-                                A diverse group of developers, designers, and tech enthusiasts. We believe in peer-to-peer learning and growing together as a <span className="text-shatter-pink">family</span>.
-                            </p>
-                        </div>
-                    </FoldCard>
-
-                    <FoldCard accent="void" className="h-full bg-[#303134] hover:bg-black group transition-colors duration-300">
-                        <div className="p-8 space-y-4">
-                            <div className="size-16 bg-black border-2 border-white flex items-center justify-center shadow-[4px_4px_0px_black] group-hover:shadow-[4px_4px_0px_white] transition-shadow">
-                                <Rocket className="size-8 text-white" />
-                            </div>
-                            <h3 className="text-3xl font-black text-[#E8EAED] uppercase italic tracking-tight group-hover:text-white">Our Vision</h3>
-                            <p className="text-[#9AA0A6] font-medium leading-relaxed group-hover:text-[#E8EAED]">
-                                To become the premier student technical hub where every member graduates with a portfolio of impactful projects and a network of lifelong peers.
-                            </p>
-                        </div>
-                    </FoldCard>
-                </div>
-
-                {/* History / Timeline Section */}
-                <div className="relative border-l-4 border-black ml-4 md:ml-12 space-y-16 pl-8 md:pl-16 py-8">
-                    {/* Timeline Item 1 */}
-                    <div className="relative group">
-                        <div className="absolute -left-[45px] md:-left-[77px] top-2 size-6 bg-shatter-yellow border-4 border-black transform rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-                        <h3 className="text-4xl font-black uppercase italic text-[#E8EAED] mb-4">2025: The Platform Era</h3>
-                        <div className="bg-[#303134] border-2 border-black p-6 shadow-[8px_8px_0px_black] inline-block max-w-3xl transform hover:translate-x-2 transition-transform">
-                            <p className="text-[#9AA0A6] font-bold text-lg">
-                                Launching the <span className="text-shatter-yellow">"Super Techie"</span> platform to gamify learning and streamline event management, marking a new chapter in how we operate.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Timeline Item 2 */}
-                    <div className="relative group">
-                        <div className="absolute -left-[45px] md:-left-[77px] top-2 size-6 bg-[#9AA0A6] border-4 border-black transform rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-                        <h3 className="text-4xl font-black uppercase italic text-[#E8EAED] mb-4">2024: Expansion</h3>
-                        <div className="bg-[#303134] border-2 border-black p-6 shadow-[8px_8px_0px_black] inline-block max-w-3xl transform hover:translate-x-2 transition-transform">
-                            <p className="text-[#9AA0A6] font-bold text-lg">
-                                Hosted our first city-wide Hackathon <span className="text-white bg-black px-1">"HackNova"</span>, with over 500 participants. Established dedicated domains for AI/ML and Web Development.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Timeline Item 3 */}
-                    <div className="relative group">
-                        <div className="absolute -left-[45px] md:-left-[77px] top-2 size-6 bg-[#9AA0A6] border-4 border-black transform rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-                        <h3 className="text-4xl font-black uppercase italic text-[#E8EAED] mb-4">2023: Inception</h3>
-                        <div className="bg-[#303134] border-2 border-black p-6 shadow-[8px_8px_0px_black] inline-block max-w-3xl transform hover:translate-x-2 transition-transform">
-                            <p className="text-[#9AA0A6] font-bold text-lg">
-                                MSTC was founded by a small group of passionate students who wanted to bridge the gap between classroom theory and industry practice.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Footer Quote */}
-                <div className="text-center py-20 border-t-4 border-black relative overflow-hidden">
+                {/* Connect Section */}
+                <div className="text-center space-y-12 py-20 border-t-4 border-black relative">
                     <div className="absolute inset-0 bg-shatter-pattern opacity-5" />
-                    <Zap className="size-12 text-shatter-yellow mx-auto mb-6 animate-pulse" />
-                    <p className="text-3xl md:text-5xl font-black uppercase italic text-[#E8EAED] tracking-tighter">
-                        "Code is just the tool. <br />
-                        <span className="text-shatter-pink">Impact is the goal.</span>"
-                    </p>
+                    <div className="relative z-10 space-y-12">
+                        <div>
+                            <h2 className="text-4xl md:text-6xl font-black uppercase italic text-[#E8EAED] tracking-tighter mb-4">
+                                Connect With Us
+                            </h2>
+                            <p className="text-xl text-[#9AA0A6] max-w-2xl mx-auto">Stay connected with MSTC DAU Gandhinagar and be part of our growing community</p>
+                        </div>
+
+                        <div className="flex flex-wrap justify-center gap-6">
+                            {SOCIALS.map((social, idx) => (
+                                <a
+                                    key={idx}
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-3 px-6 py-4 bg-black border-2 border-shatter-yellow text-[#E8EAED] hover:bg-shatter-yellow hover:text-black transition-all duration-300 font-bold uppercase tracking-wider transform hover:-rotate-2 hover:shadow-[4px_4px_0px_white]"
+                                >
+                                    {social.icon}
+                                    <span>{social.name}</span>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
     );
 }
+
+const GOALS = [
+    "Foster technical curiosity across multiple domains and tech stacks",
+    "Maintain a healthy balance between development and DSA / competitive programming",
+    "Encourage students to explore, build and contribute at their own pace",
+    "Promote open-source culture and collaborative learning",
+    "Help members grow not just technically, but also in leadership, teamwork and communication",
+    "The event and content we serve is aimed to help students in resume building"
+];
+
+const EVENTS = [
+    { title: "Git-Tech-Toe", description: "Hands-on sessions focused to introduce open-source contributions and version control and logic building for code." },
+    { title: "Hacktoberfest", description: "Beginner friendly open source event with collaboration of hacktoberfest to promote open source and provides platform beginners to contribute." },
+    { title: "Winter of Code (WoC)", description: "A month-long, mentorship-driven program where students work on real-world open-source projects." },
+    { title: "Face-Off (1v1)", description: "Competitive programming battles designed to sharpen problem-solving skills in a fun, fast-paced format." },
+    { title: "CodeChain", description: "A mock ICPC like event to promote CP and make them familiar with the process of ICPC." },
+    { title: "Summer of Code", description: "A summer mentorship initiative focused on building impactful projects and gaining deeper technical exposure." },
+    { title: "Guest Talks", description: "Interactive sessions with industry professionals sharing their journeys, challenges and insights." }
+];
+
+const SOCIALS = [
+    { name: "LinkedIn", url: "https://in.linkedin.com/company/microsoft-student-technical-club-da-iict", icon: <Linkedin className="size-5" /> },
+    { name: "Instagram", url: "https://www.instagram.com/mstc_daiict/", icon: <Instagram className="size-5" /> },
+    { name: "Twitter (X)", url: "https://x.com/mstc_daiict", icon: <Twitter className="size-5" /> },
+    { name: "Facebook", url: "https://www.facebook.com/mstcatdaiict/", icon: <Facebook className="size-5" /> },
+    { name: "GitHub", url: "https://github.com/MSTC-DA-IICT", icon: <Github className="size-5" /> }
+];
