@@ -20,6 +20,17 @@ export default function AboutPage() {
                         <h1 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter text-[#E8EAED] leading-[0.95] drop-shadow-lg">
                             About <span className="text-shatter-yellow">MSTC</span>
                         </h1>
+                {/* About MSTC Section */}
+                <div className="text-center space-y-12 max-w-5xl mx-auto relative">
+                    <div className="space-y-6">
+                        <div className="inline-block bg-shatter-yellow border-2 border-black transform -rotate-2 shadow-[4px_4px_0px_black] mb-6">
+                            <span className="block px-4 py-1 text-black font-black uppercase tracking-widest text-sm transform rotate-2">
+                                Student-Led • Tech-Driven
+                            </span>
+                        </div>
+                        <h1 className="text-5xl md:text-8xl font-black uppercase italic tracking-tighter text-[#E8EAED] leading-[0.95] drop-shadow-lg">
+                            About <span className="text-shatter-yellow">MSTC</span>
+                        </h1>
                     </div>
 
                     <div className="text-xl md:text-2xl text-[#9AA0A6] font-medium leading-relaxed text-left space-y-6 bg-[#303134] p-8 md:p-12 border-2 border-black shadow-[8px_8px_0px_black] relative group hover:shadow-[12px_12px_0px_white] transition-shadow duration-300">
@@ -116,6 +127,33 @@ export default function AboutPage() {
         </div>
     );
 }
+
+const GOALS = [
+    "Foster technical curiosity across multiple domains and tech stacks",
+    "Maintain a healthy balance between development and DSA / competitive programming",
+    "Encourage students to explore, build and contribute at their own pace",
+    "Promote open-source culture and collaborative learning",
+    "Help members grow not just technically, but also in leadership, teamwork and communication",
+    "The event and content we serve is aimed to help students in resume building"
+];
+
+const EVENTS = [
+    { title: "Git-Tech-Toe", description: "Hands-on sessions focused to introduce open-source contributions and version control and logic building for code." },
+    { title: "Hacktoberfest", description: "Beginner friendly open source event with collaboration of hacktoberfest to promote open source and provides platform beginners to contribute." },
+    { title: "Winter of Code (WoC)", description: "A month-long, mentorship-driven program where students work on real-world open-source projects." },
+    { title: "Face-Off (1v1)", description: "Competitive programming battles designed to sharpen problem-solving skills in a fun, fast-paced format." },
+    { title: "CodeChain", description: "A mock ICPC like event to promote CP and make them familiar with the process of ICPC." },
+    { title: "Summer of Code", description: "A summer mentorship initiative focused on building impactful projects and gaining deeper technical exposure." },
+    { title: "Guest Talks", description: "Interactive sessions with industry professionals sharing their journeys, challenges and insights." }
+];
+
+const SOCIALS = [
+    { name: "LinkedIn", url: "https://in.linkedin.com/company/microsoft-student-technical-club-da-iict", icon: <Linkedin className="size-5" /> },
+    { name: "Instagram", url: "https://www.instagram.com/mstc_daiict/", icon: <Instagram className="size-5" /> },
+    { name: "Twitter (X)", url: "https://x.com/mstc_daiict", icon: <Twitter className="size-5" /> },
+    { name: "Facebook", url: "https://www.facebook.com/mstcatdaiict/", icon: <Facebook className="size-5" /> },
+    { name: "GitHub", url: "https://github.com/MSTC-DA-IICT", icon: <Github className="size-5" /> }
+];
 
 const GOALS = [
     "Foster technical curiosity across multiple domains and tech stacks",
