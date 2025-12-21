@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Calendar, LayoutDashboard, Users, Settings, Trophy, LogOut, Terminal, ArrowRight, ShieldAlert, ArrowLeft } from 'lucide-react';
+import { Calendar, LayoutDashboard, Users, Settings, Trophy, LogOut, Terminal, ArrowRight, ShieldAlert, ArrowLeft, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ShatterBackground } from '@/components/ui/shatter-background';
 import { signOut } from 'next-auth/react';
@@ -11,6 +11,7 @@ import Image from 'next/image';
 
 const navItems = [
     { name: 'Overview', href: '/admin', icon: LayoutDashboard },
+    { name: 'Team', href: '/admin/team', icon: GraduationCap },
     { name: 'Events', href: '/admin/events', icon: Calendar },
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Legacy', href: '/admin/legacy', icon: Trophy },

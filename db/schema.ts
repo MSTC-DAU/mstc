@@ -208,9 +208,30 @@ export const checkpointsRelations = relations(checkpoints, ({ one }) => ({
     }),
 }));
 
+// Roadmaps Relations
 export const roadmapsRelations = relations(roadmaps, ({ one }) => ({
     event: one(events, {
         fields: [roadmaps.eventId],
         references: [events.id],
     }),
 }));
+
+// Mentors Table
+export const mentors = pgTable('mentors', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    name: text('name').notNull(),
+    image: text('image'), // URL to image
+    role: text('role').notNull(), // e.g. "Former Convener", "Alumnus"
+    linkedinId: text('linkedin_id'),
+    githubId: text('github_id'),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Team Photos Table (for Header)
+export const teamPhotos = pgTable('team_photos', {
+    id: uuid('id').defaultRandom().primaryKey(),
+    url: text('url').notNull(),
+    description: text('description'),
+    isHeader: boolean('is_header').default(false), // Mark one as the active header
+    createdAt: timestamp('created_at').defaultNow(),
+});

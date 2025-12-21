@@ -17,7 +17,7 @@ const events = [
   { title: 'Hacktoberfest', date: 'Oct', status: 'upcoming', type: 'Open Source' },
   { title: 'ICPC Prep', date: 'Nov', status: 'upcoming', type: 'CP' },
   { title: 'Winter of Code', date: 'Dec', status: 'upcoming', type: 'Mentorship' },
-  { title: 'Code Wars', date: 'Jan', status: 'upcoming', type: 'CP' },
+  { title: 'Code Chain Juniors', date: 'Jan', status: 'upcoming', type: 'CP' },
   { title: 'FaceOff', date: 'Feb', status: 'upcoming', type: 'CP 1v1' },
   { title: 'Summer of Code', date: 'May', status: 'upcoming', type: 'Mentorship' },
 ];
@@ -28,8 +28,8 @@ const domains = [
   { name: 'AI/ML', icon: Brain },
   { name: 'CP / DSA', icon: Code2 },
   { name: 'Game Dev', icon: Cpu },
-  { name: 'Cyber Sec', icon: Terminal },
-  { name: 'Blockchain', icon: Sparkles },
+  // { name: 'Cyber Sec', icon: Sparkles },
+  { name: 'Blockchain', icon: Terminal },
 ];
 
 const SOCIALS = [
