@@ -3,7 +3,7 @@
 
 import { db } from '@/lib/db';
 import { registrations, teams, events, users, checkpoints } from '@/db/schema'; // Added events, users
-import { eq, and } from 'drizzle-orm'; // Added eq, and
+import { eq, and, inArray } from 'drizzle-orm'; // Added eq, and, inArray
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -188,5 +188,39 @@ export async function removeParticipant(registrationId: string) {
     } catch (e) {
         console.error('Remove participant error:', e);
         return { message: 'Failed to remove participant', success: false };
+    }
+}
+
+export async function bulkAssignDomain(eventId: string, domain: string, registrationIds: string[]) {
+    const session = await auth();
+    if (!session?.user?.id) return { message: 'Unauthorized', success: false };
+
+    const user = await db.query.users.findFirst({
+        where: eq(users.id, session.user.id)
+    });
+
+    if (!user || !['convener', 'deputy_convener', 'core_member'].includes(user.role || '')) {
+        return { message: 'Unauthorized', success: false };
+    }
+
+    if (!registrationIds.length) {
+        return { message: 'No users selected', success: false };
+    }
+
+    try {
+        await db.update(registrations)
+            .set({ assignedDomain: domain })
+            .where(
+                and(
+                    eq(registrations.eventId, eventId),
+                    inArray(registrations.id, registrationIds)
+                )
+            );
+
+        revalidatePath('/admin/events');
+        return { message: `Successfully assigned ${registrationIds.length} users to ${domain}`, success: true };
+    } catch (e) {
+        console.error('Bulk assign error:', e);
+        return { message: 'Failed to assign domains', success: false };
     }
 }

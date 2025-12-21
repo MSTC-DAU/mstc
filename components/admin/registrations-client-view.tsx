@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DomainAssigner } from '@/components/admin/domain-assigner';
+import { BulkAssignDialog } from '@/components/admin/bulk-assign-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Download, Settings2, ChevronDown, ChevronRight } from 'lucide-react';
 import { ExportOptions, exportRegistrationsToExcel } from '@/lib/data-export';
@@ -107,164 +108,173 @@ export function RegistrationsClientView({ initialRegistrations, event, available
                     </Select>
                 </div>
 
-                <Dialog open={exportOpen} onOpenChange={setExportOpen}>
-                    <DialogTrigger asChild>
-                        <Button className="w-full md:w-auto gap-2 bg-green-600 hover:bg-green-700">
-                            <Settings2 className="size-4" /> Export Options
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-[#1a1a1a] border-white/10 text-white sm:max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
-                        <DialogHeader>
-                            <DialogTitle>Export Configuration</DialogTitle>
-                        </DialogHeader>
+                <div className="flex gap-2">
+                    <BulkAssignDialog
+                        event={event}
+                        registrations={registrations}
+                        availableDomains={availableDomains}
+                        onAssign={() => window.location.reload()} // Simple refresh to fetch new data
+                    />
 
-                        <div className="flex-1 overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#0a0a0a] [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
-                            <div className="space-y-6 py-4">
+                    <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+                        <DialogTrigger asChild>
+                            <Button className="w-full md:w-auto gap-2 bg-green-600 hover:bg-green-700">
+                                <Settings2 className="size-4" /> Export Options
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-[#1a1a1a] border-white/10 text-white sm:max-w-2xl max-h-[85vh] overflow-hidden flex flex-col">
+                            <DialogHeader>
+                                <DialogTitle>Export Configuration</DialogTitle>
+                            </DialogHeader>
 
-                                {/* 1. Participant Details */}
-                                <div className="space-y-3">
-                                    <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Participant Details</h4>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        {Object.keys(exportOptions.participantFields).map((key) => (
-                                            <div key={key} className="flex items-center space-x-2">
-                                                <Checkbox
-                                                    id={`p-${key}`}
-                                                    checked={exportOptions.participantFields[key as keyof typeof exportOptions.participantFields]}
-                                                    onCheckedChange={(c) => setExportOptions(prev => ({
-                                                        ...prev,
-                                                        participantFields: { ...prev.participantFields, [key]: !!c }
-                                                    }))}
-                                                />
-                                                <Label htmlFor={`p-${key}`} className="capitalize cursor-pointer">{key}</Label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                            <div className="flex-1 overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#0a0a0a] [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
+                                <div className="space-y-6 py-4">
 
-                                {/* 2. Team Details */}
-                                <div className="space-y-3">
-                                    <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Team Details</h4>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="flex items-center space-x-2">
-                                            <Checkbox
-                                                id="t-name"
-                                                checked={exportOptions.teamFields.name}
-                                                onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, teamFields: { ...prev.teamFields, name: !!c } }))}
-                                            />
-                                            <Label htmlFor="t-name">Team Name</Label>
-                                        </div>
-                                        <div className="flex items-center space-x-2">
-                                            <Checkbox
-                                                id="t-code"
-                                                checked={exportOptions.teamFields.code}
-                                                onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, teamFields: { ...prev.teamFields, code: !!c } }))}
-                                            />
-                                            <Label htmlFor="t-code">Join Code</Label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* 3. Custom Questions */}
-                                {(allCustomQuestions as string[]).length > 0 && (
+                                    {/* 1. Participant Details */}
                                     <div className="space-y-3">
-                                        <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Custom Questions</h4>
-                                        <div className="space-y-2">
-                                            {(allCustomQuestions as string[]).map((q, idx) => (
-                                                <div key={idx} className="flex items-start space-x-2">
+                                        <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Participant Details</h4>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            {Object.keys(exportOptions.participantFields).map((key) => (
+                                                <div key={key} className="flex items-center space-x-2">
                                                     <Checkbox
-                                                        id={`q-${idx}`}
-                                                        className="mt-1"
-                                                        checked={exportOptions.customQuestions.includes(q)}
-                                                        onCheckedChange={(c) => toggleCustomQuestion(q, !!c)}
+                                                        id={`p-${key}`}
+                                                        checked={exportOptions.participantFields[key as keyof typeof exportOptions.participantFields]}
+                                                        onCheckedChange={(c) => setExportOptions(prev => ({
+                                                            ...prev,
+                                                            participantFields: { ...prev.participantFields, [key]: !!c }
+                                                        }))}
                                                     />
-                                                    <Label htmlFor={`q-${idx}`} className="text-sm leading-tight text-gray-300 cursor-pointer">{q}</Label>
+                                                    <Label htmlFor={`p-${key}`} className="capitalize cursor-pointer">{key}</Label>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
-                                )}
 
-                                {/* 4. Weekly Submissions (Granular) */}
-                                {(allWeeks as number[]).length > 0 && (
-                                    <div className="space-y-4">
-                                        <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Submissions & Feedback</h4>
-
-                                        {/* Column Selectors */}
-                                        <div className="space-y-2">
-                                            <Label className="text-xs text-gray-500">Include Columns:</Label>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <div className="flex items-center space-x-2">
-                                                    <Checkbox
-                                                        id="sub-content"
-                                                        checked={exportOptions.checkpointFields.content}
-                                                        onCheckedChange={(c) => setExportOptions(prev => ({
-                                                            ...prev, checkpointFields: { ...prev.checkpointFields, content: !!c }
-                                                        }))}
-                                                    />
-                                                    <Label htmlFor="sub-content">Content</Label>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <Checkbox
-                                                        id="sub-feedback"
-                                                        checked={exportOptions.checkpointFields.feedback}
-                                                        onCheckedChange={(c) => setExportOptions(prev => ({
-                                                            ...prev, checkpointFields: { ...prev.checkpointFields, feedback: !!c }
-                                                        }))}
-                                                    />
-                                                    <Label htmlFor="sub-feedback">Feedback</Label>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <Checkbox
-                                                        id="sub-status"
-                                                        checked={exportOptions.checkpointFields.approvalStatus}
-                                                        onCheckedChange={(c) => setExportOptions(prev => ({
-                                                            ...prev, checkpointFields: { ...prev.checkpointFields, approvalStatus: !!c }
-                                                        }))}
-                                                    />
-                                                    <Label htmlFor="sub-status">Status</Label>
-                                                </div>
+                                    {/* 2. Team Details */}
+                                    <div className="space-y-3">
+                                        <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Team Details</h4>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex items-center space-x-2">
+                                                <Checkbox
+                                                    id="t-name"
+                                                    checked={exportOptions.teamFields.name}
+                                                    onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, teamFields: { ...prev.teamFields, name: !!c } }))}
+                                                />
+                                                <Label htmlFor="t-name">Team Name</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <Checkbox
+                                                    id="t-code"
+                                                    checked={exportOptions.teamFields.code}
+                                                    onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, teamFields: { ...prev.teamFields, code: !!c } }))}
+                                                />
+                                                <Label htmlFor="t-code">Join Code</Label>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        {/* Week Selectors */}
-                                        <div className="space-y-2">
-                                            <Label className="text-xs text-gray-500">Include Weeks:</Label>
-                                            <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
-                                                {(allWeeks as number[]).map(week => (
-                                                    <div key={week} className="flex items-center space-x-2">
+                                    {/* 3. Custom Questions */}
+                                    {(allCustomQuestions as string[]).length > 0 && (
+                                        <div className="space-y-3">
+                                            <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Custom Questions</h4>
+                                            <div className="space-y-2">
+                                                {(allCustomQuestions as string[]).map((q, idx) => (
+                                                    <div key={idx} className="flex items-start space-x-2">
                                                         <Checkbox
-                                                            id={`week-${week}`}
-                                                            checked={exportOptions.checkpointFields.weeks.includes(week)}
-                                                            onCheckedChange={(c) => toggleWeek(week, !!c)}
+                                                            id={`q-${idx}`}
+                                                            className="mt-1"
+                                                            checked={exportOptions.customQuestions.includes(q)}
+                                                            onCheckedChange={(c) => toggleCustomQuestion(q, !!c)}
                                                         />
-                                                        <Label htmlFor={`week-${week}`}>W{week}</Label>
+                                                        <Label htmlFor={`q-${idx}`} className="text-sm leading-tight text-gray-300 cursor-pointer">{q}</Label>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
+                                    )}
+
+                                    {/* 4. Weekly Submissions (Granular) */}
+                                    {(allWeeks as number[]).length > 0 && (
+                                        <div className="space-y-4">
+                                            <h4 className="font-semibold text-purple-400 text-sm uppercase tracking-wider border-b border-white/10 pb-1">Submissions & Feedback</h4>
+
+                                            {/* Column Selectors */}
+                                            <div className="space-y-2">
+                                                <Label className="text-xs text-gray-500">Include Columns:</Label>
+                                                <div className="grid grid-cols-3 gap-2">
+                                                    <div className="flex items-center space-x-2">
+                                                        <Checkbox
+                                                            id="sub-content"
+                                                            checked={exportOptions.checkpointFields.content}
+                                                            onCheckedChange={(c) => setExportOptions(prev => ({
+                                                                ...prev, checkpointFields: { ...prev.checkpointFields, content: !!c }
+                                                            }))}
+                                                        />
+                                                        <Label htmlFor="sub-content">Content</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <Checkbox
+                                                            id="sub-feedback"
+                                                            checked={exportOptions.checkpointFields.feedback}
+                                                            onCheckedChange={(c) => setExportOptions(prev => ({
+                                                                ...prev, checkpointFields: { ...prev.checkpointFields, feedback: !!c }
+                                                            }))}
+                                                        />
+                                                        <Label htmlFor="sub-feedback">Feedback</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <Checkbox
+                                                            id="sub-status"
+                                                            checked={exportOptions.checkpointFields.approvalStatus}
+                                                            onCheckedChange={(c) => setExportOptions(prev => ({
+                                                                ...prev, checkpointFields: { ...prev.checkpointFields, approvalStatus: !!c }
+                                                            }))}
+                                                        />
+                                                        <Label htmlFor="sub-status">Status</Label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Week Selectors */}
+                                            <div className="space-y-2">
+                                                <Label className="text-xs text-gray-500">Include Weeks:</Label>
+                                                <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
+                                                    {(allWeeks as number[]).map(week => (
+                                                        <div key={week} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={`week-${week}`}
+                                                                checked={exportOptions.checkpointFields.weeks.includes(week)}
+                                                                onCheckedChange={(c) => toggleWeek(week, !!c)}
+                                                            />
+                                                            <Label htmlFor={`week-${week}`}>W{week}</Label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <div className="flex items-center space-x-2 pt-2 border-t border-white/10">
+                                        <Checkbox
+                                            id="dp"
+                                            checked={exportOptions.includeDomainPriorities}
+                                            onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, includeDomainPriorities: !!c }))}
+                                        />
+                                        <Label htmlFor="dp">Include Domain Priorities</Label>
                                     </div>
-                                )}
 
-                                <div className="flex items-center space-x-2 pt-2 border-t border-white/10">
-                                    <Checkbox
-                                        id="dp"
-                                        checked={exportOptions.includeDomainPriorities}
-                                        onCheckedChange={(c) => setExportOptions(prev => ({ ...prev, includeDomainPriorities: !!c }))}
-                                    />
-                                    <Label htmlFor="dp">Include Domain Priorities</Label>
                                 </div>
-
                             </div>
-                        </div>
 
-                        <DialogFooter className="border-t border-white/10 pt-4 mt-auto">
-                            <Button variant="ghost" onClick={() => setExportOpen(false)}>Cancel</Button>
-                            <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700 gap-2">
-                                <Download className="size-4" /> Download Excel
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                            <DialogFooter className="border-t border-white/10 pt-4 mt-auto">
+                                <Button variant="ghost" onClick={() => setExportOpen(false)}>Cancel</Button>
+                                <Button onClick={handleExport} className="bg-green-600 hover:bg-green-700 gap-2">
+                                    <Download className="size-4" /> Download Excel
+                                </Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </div>
 
             <div className="grid gap-6">
