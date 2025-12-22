@@ -208,6 +208,7 @@ export const checkpointsRelations = relations(checkpoints, ({ one }) => ({
     }),
 }));
 
+// Roadmaps Relations
 export const roadmapsRelations = relations(roadmaps, ({ one }) => ({
     event: one(events, {
         fields: [roadmaps.eventId],

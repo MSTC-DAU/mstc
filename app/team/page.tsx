@@ -1,6 +1,6 @@
 import { OrigamiNavbar } from '@/components/ui/origami/origami-navbar'; // Using the proper Origami Navbar
 import { db } from '@/lib/db';
-import { users } from '@/db/schema';
+import { users, mentors, teamPhotos } from '@/db/schema';
 import { not } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { Github, Linkedin, User } from 'lucide-react';
@@ -40,8 +40,9 @@ export default async function TeamPage() {
         <div className="min-h-screen bg-[#202124] text-[#E8EAED] font-sans selection:bg-shatter-yellow selection:text-black">
             <OrigamiNavbar />
 
-            <main className="pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto space-y-20">
-                {/* Header Section */}
+            <main className="pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto space-y-16">
+
+                {/* 1. Header Section */}
                 <div className="text-center space-y-4">
                     <h1 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-[#E8EAED]">
                         Meet The <span className="text-shatter-yellow">Team</span>
