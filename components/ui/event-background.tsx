@@ -207,6 +207,100 @@ const CPBackground = () => (
     </div>
 );
 
+const PolarNightBackground = () => {
+    // 1. ICE SHARDS (Blue): Fall from Top to Bottom
+    // Increased count (40 -> 70) and scale variance
+    const iceShards = React.useMemo(() => [...Array(70)].map(() => ({
+        left: Math.random() * 100 + "%",
+        top: -Math.random() * 20 + "%",
+        yEnd: 100 + Math.random() * 20 + "vh",
+        duration: 2 + Math.random() * 4, // Faster fall
+        delay: -Math.random() * 5,
+        scale: 1 + Math.random() * 1.5, // Much larger scale
+        opacity: 0.7 + Math.random() * 0.3 // Higher average opacity
+    })), []);
+
+    // 2. FIRE EMBER/ASH (Red): Rise from Bottom to Top
+    // Increased count (40 -> 70)
+    const fireEmbers = React.useMemo(() => [...Array(70)].map(() => ({
+        left: Math.random() * 100 + "%",
+        bottom: -Math.random() * 20 + "%",
+        yEnd: -(100 + Math.random() * 20) + "vh",
+        duration: 4 + Math.random() * 6,
+        delay: -Math.random() * 10,
+        scale: 1 + Math.random() * 2, // Signficantly larger
+        opacity: 0.6 + Math.random() * 0.4
+    })), []);
+
+    return (
+        <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
+            {/* --- STATIC GRADIENT ZONES --- */}
+
+            {/* TOP: Cold Blue Zone - Increased Intensity */}
+            <div className="absolute inset-x-0 top-0 h-[55vh] bg-gradient-to-b from-cyan-500/30 via-blue-900/15 to-transparent mix-blend-screen" />
+
+            {/* BOTTOM: Hot Red Zone - Increased Intensity */}
+            <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-red-600/30 via-red-900/15 to-transparent mix-blend-screen" />
+
+
+            {/* --- PARTICLE SYSTEMS --- */}
+
+            {/* BLUE SNOWFLAKES (Downwards) */}
+            {iceShards.map((p, i) => (
+                <motion.div
+                    key={`ice-${i}`}
+                    style={{
+                        left: p.left,
+                        top: p.top,
+                        scale: p.scale,
+                    }}
+                    animate={{
+                        y: p.yEnd,
+                        opacity: [0, p.opacity, 0],
+                        rotate: [0, 360] // Rotate as they fall
+                    }}
+                    transition={{
+                        duration: p.duration,
+                        repeat: Infinity,
+                        delay: p.delay,
+                        ease: "linear"
+                    }}
+                    className="absolute text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] text-xl select-none"
+                >
+                    ❄
+                </motion.div>
+            ))}
+
+            {/* RED EMBER ASH (Upwards) */}
+            {fireEmbers.map((p, i) => (
+                <motion.div
+                    key={`fire-${i}`}
+                    style={{
+                        left: p.left,
+                        bottom: p.bottom,
+                        scale: p.scale,
+                    }}
+                    animate={{
+                        y: p.yEnd,
+                        x: (Math.random() - 0.5) * 150, // Wider drift
+                        opacity: [0, p.opacity, 0]
+                    }}
+                    transition={{
+                        duration: p.duration,
+                        repeat: Infinity,
+                        delay: p.delay,
+                        ease: "linear"
+                    }}
+                    className="absolute rounded-full bg-red-500 blur-[1px] shadow-[0_0_15px_red] size-2" // Base size increased
+                />
+            ))}
+
+            {/* Cinematic Vignette (Center Focus) */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.5)_70%,#000000_100%)]" />
+        </div>
+    );
+};
+
 const DefaultBackground = () => (
     <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-black opacity-80" />
@@ -217,6 +311,7 @@ const DefaultBackground = () => (
 const COMPONENTS: Record<EventThemeKey, React.FC> = {
     default: DefaultBackground,
     winter: WinterBackground,
+    polar_night: PolarNightBackground,
     hacktoberfest: HacktoberfestBackground,
     github: GithubBackground,
     summer: SummerBackground,

@@ -1,4 +1,4 @@
-export type EventThemeKey = 'default' | 'winter' | 'hacktoberfest' | 'github' | 'summer' | 'cp';
+export type EventThemeKey = 'default' | 'winter' | 'hacktoberfest' | 'github' | 'summer' | 'cp' | 'polar_night';
 
 export interface ThemeConfig {
     name: string;
@@ -22,6 +22,13 @@ export const EVENT_THEME_CONFIG: Record<EventThemeKey, ThemeConfig> = {
         accent: 'text-cyan-200 border-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]',
         card: 'backdrop-blur-xl bg-white/5 border border-white/20 shadow-[0_0_40px_-10px_rgba(34,211,238,0.2)] rounded-xl',
         icon: 'text-cyan-200 drop-shadow-[0_0_15px_rgba(34,211,238,0.9)] animate-pulse'
+    },
+    polar_night: {
+        name: 'Polar Night',
+        background: 'bg-[#020617]',
+        accent: 'text-red-500 border-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.6)]',
+        card: 'backdrop-blur-md bg-black/40 border border-red-900/50 shadow-[0_0_30px_-5px_rgba(220,38,38,0.15)] rounded-sm',
+        icon: 'text-red-500 drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] animate-pulse'
     },
     hacktoberfest: {
         name: 'Hacktoberfest',
