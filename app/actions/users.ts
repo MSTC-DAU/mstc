@@ -4,7 +4,7 @@
 import { auth } from '@/auth';
 import { db } from '@/lib/db';
 import { users } from '@/db/schema';
-import { eq, not } from 'drizzle-orm';
+import { eq, not, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 // Helper to check if current user is Convener
@@ -18,7 +18,7 @@ async function isConvener() {
         columns: { role: true }
     });
 
-    return user?.role === 'convener';
+    return user?.role === 'convener' || user?.role === 'deputy_convener';
 }
 
 export async function updateUserRole(targetUserId: string, newRole: 'student' | 'member' | 'core_member' | 'deputy_convener' | 'convener') {
@@ -35,19 +35,19 @@ export async function updateUserRole(targetUserId: string, newRole: 'student' | 
         // 1. Permission Check
         // Only Convener can promote to Core/Deputy/Convener
         // Deputy might be able to promote to Member? Let's keep it strict: Only Convener for now.
-        if (actor.role !== 'convener') {
+        if (actor.role !== 'convener' && actor.role !== 'deputy_convener') {
             // Exception: Maybe Deputy can verify students -> members?
-            // For now, strict: Only Convener.
-            return { success: false, message: "Only the Convener can manage roles." };
+            // For now, strict: Only Convener & Deputy.
+            return { success: false, message: "Only the Convener or Deputy Convener can manage roles." };
         }
 
-        // 2. Self-Check (Prevent accidental self-demotion if they are the ONLY convener)
-        if (targetUserId === actor.id && newRole !== 'convener') {
-            // Check if there are other conveners
-            const otherConveners = await db.query.users.findMany({
-                where: eq(users.role, 'convener')
+        // 2. Self-Check (Prevent accidental self-demotion if they are the ONLY convener/deputy)
+        if (targetUserId === actor.id && (newRole !== 'convener' && newRole !== 'deputy_convener')) {
+            // Check if there are other admins
+            const otherAdmins = await db.query.users.findMany({
+                where: inArray(users.role, ['convener', 'deputy_convener'])
             });
-            if (otherConveners.length <= 1) {
+            if (otherAdmins.length <= 1) {
                 return { success: false, message: "You cannot demote yourself. Transfer power to someone else first." };
             }
         }
@@ -70,8 +70,8 @@ export async function updateUserRole(targetUserId: string, newRole: 'student' | 
 
 export async function removeUser(targetUserId: string) {
     try {
-        if (!await isConvener()) {
-            return { success: false, message: "Only the Convener can remove users." };
+        if (!await isConvener()) { // isConvener now includes deputy_convener
+            return { success: false, message: "Only the Convener or Deputy Convener can remove users." };
         }
 
         // Prevent deleting self!

@@ -214,3 +214,31 @@ export const roadmapsRelations = relations(roadmaps, ({ one }) => ({
         references: [events.id],
     }),
 }));
+
+// Mentors Table (Preserved)
+export const mentors = pgTable("mentors", {
+    id: uuid('id').defaultRandom().primaryKey(),
+    name: text('name').notNull(),
+    image: text('image'),
+    role: text('role').notNull(),
+    linkedinId: text("linkedin_id"),
+    githubId: text("github_id"),
+    createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Team Photos Table (Preserved)
+export const teamPhotos = pgTable("team_photos", {
+    id: uuid('id').defaultRandom().primaryKey(),
+    url: text('url').notNull(),
+    description: text('description'),
+    isHeader: boolean("is_header").default(false),
+    createdAt: timestamp("created_at").defaultNow(),
+});
+
+// System Settings Table
+export const systemSettings = pgTable('system_settings', {
+    key: text('key').primaryKey(),
+    value: text('value').notNull(),
+    description: text('description'),
+});
+

@@ -11,17 +11,10 @@ export default async function AdminDashboard() {
     const session = await auth();
     console.log("AdminDashboard Session:", JSON.stringify(session, null, 2));
 
-    const userRole = session?.user?.role;
-    const adminRoles = ['convener', 'deputy_convener', 'core_member'];
-
-    console.log("AdminDashboard Check:", { userRole, adminRoles, allowed: userRole && adminRoles.includes(userRole) });
-
-    if (!userRole || !adminRoles.includes(userRole)) {
-        console.log("AdminDashboard: Access Denied. Redirecting to /dashboard");
-        redirect('/dashboard');
-    }
 
     const stats = await getAdminStats();
+
+
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 font-sans">

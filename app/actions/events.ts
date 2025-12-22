@@ -82,8 +82,8 @@ export async function deleteEvent(eventId: string) {
         where: eq(users.id, session.user.id)
     });
 
-    if (user?.role !== 'convener') {
-        return { message: 'Unauthorized: Only Conveners can delete events.', success: false };
+    if (user?.role !== 'convener' && user?.role !== 'deputy_convener') {
+        return { message: 'Unauthorized: Only Conveners and Deputy Conveners can delete events.', success: false };
     }
 
     try {

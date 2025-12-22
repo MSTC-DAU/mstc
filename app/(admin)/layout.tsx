@@ -1,102 +1,48 @@
-'use client';
-
-import { cn } from '@/lib/utils';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { AdminLayoutClient } from './admin-layout-client';
+import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Calendar, LayoutDashboard, Users, Settings, Trophy, LogOut, Terminal, ArrowRight, ShieldAlert, ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { ShatterBackground } from '@/components/ui/shatter-background';
-import { signOut } from 'next-auth/react';
-import Image from 'next/image';
 
-const navItems = [
-    { name: 'Overview', href: '/admin', icon: LayoutDashboard },
-    { name: 'Events', href: '/admin/events', icon: Calendar },
-    { name: 'Users', href: '/admin/users', icon: Users },
-    { name: 'Legacy', href: '/admin/legacy', icon: Trophy },
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
-];
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+    const session = await auth();
+    const userRole = session?.user?.role;
+    const adminRoles = ['convener', 'deputy_convener', 'core_member'];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
+    if (!userRole || !adminRoles.includes(userRole)) {
+        // If the user thinks they should be here, let's show them why they aren't.
+        return (
+            <div className="min-h-screen bg-[#202124] flex items-center justify-center p-4 font-sans text-[#E8EAED]">
+                <div className="max-w-md w-full border-4 border-shatter-pink bg-[#303134] p-8 shadow-[8px_8px_0px_#FF2E63] text-center space-y-6">
+                    <ShieldAlert className="size-20 text-shatter-pink mx-auto animate-pulse" />
 
-    return (
-        <div className="min-h-screen text-[#E8EAED] font-sans relative bg-[#202124]">
-            {/* Animated Background */}
-            <ShatterBackground />
-
-
-            {/* Sidebar */}
-            <aside className="w-[300px] border-r-4 border-black flex flex-col fixed h-full bg-[#202124] z-40">
-                <div className="h-20 flex items-center justify-center border-b-4 border-black p-4 bg-shatter-yellow bg-opacity-10">
-                    <div className="flex items-center gap-3">
-                        <div className="relative size-14">
-                            <Image
-                                src="/mstc_logo.png"
-                                alt="MSTC Logo"
-                                fill
-                                className="object-contain"
-                            />
-                        </div>
-                        <h1 className="text-2xl font-black tracking-tighter uppercase italic text-[#E8EAED]">
-                            MSTC <span className="text-shatter-yellow">ADMIN</span>
-                        </h1>
+                    <div>
+                        <h1 className="text-3xl font-black uppercase italic tracking-tighter mb-2">Access Denied</h1>
+                        <p className="text-gray-400 font-bold uppercase tracking-widest">Insufficient Privileges</p>
                     </div>
-                </div>
 
-                <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-                    {navItems.map((item) => {
-                        const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
-                        const Icon = item.icon;
-
-                        return (
-                            <Link key={item.href} href={item.href} className="block group">
-                                <div className={cn(
-                                    "relative p-3 flex items-center gap-3 transition-all duration-200 border-2",
-                                    isActive
-                                        ? "bg-[#303134] text-shatter-yellow shatter-shadow-sm border-black"
-                                        : "border-transparent hover:bg-shatter-pink hover:text-white hover:border-black hover:shatter-shadow-sm text-[#E8EAED]"
-                                )}>
-                                    <Icon className={cn("size-5", isActive ? "text-shatter-yellow" : "group-hover:text-white")} />
-                                    <span className="font-black uppercase tracking-widest text-base bg-transparent">{item.name}</span>
-
-                                    {isActive && (
-                                        <ArrowRight className="ml-auto size-5 text-shatter-yellow animate-pulse" />
-                                    )}
-                                </div>
-                            </Link>
-                        );
-                    })}
-                </div>
-
-                <div className="p-6 border-t-4 border-black bg-[#202124]">
-                    <div className="mb-4 flex items-center gap-3 p-3 bg-[#303134] border-2 border-black">
-                        <ShieldAlert className="size-6 text-shatter-pink" />
-                        <div>
-                            <p className="text-xs font-black text-[#E8EAED] uppercase">SYSTEM LEVEL</p>
-                            <p className="text-[10px] text-[#9AA0A6] font-mono">ROOT_ACCESS_GRANTED</p>
+                    <div className="bg-black/30 p-4 border border-white/10 text-left space-y-2 font-mono text-sm">
+                        <div className="flex justify-between">
+                            <span className="text-gray-500">User ID:</span>
+                            <span className="text-white truncate max-w-[150px]">{session?.user?.id || 'Not Signed In'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-500">Current Role:</span>
+                            <span className="text-shatter-yellow">{userRole || 'NULL'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-500">Required:</span>
+                            <span className="text-green-400">ADMIN_TIER</span>
                         </div>
                     </div>
 
-                    <Link href="/dashboard" className="mb-2 w-full h-12 bg-black hover:bg-shatter-yellow hover:text-black text-[#E8EAED] border-2 border-white/20 hover:border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
-                        <ArrowLeft className="size-4" /> Back to Dash
+                    <Link href="/dashboard" className="block w-full py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-shatter-yellow transition-colors border-2 border-transparent hover:border-black">
+                        Return to Safety
                     </Link>
-
-                    <button
-                        onClick={() => signOut()}
-                        className="w-full h-12 bg-black hover:bg-shatter-pink hover:text-white text-[#E8EAED] border-2 border-white/20 hover:border-black font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
-                    >
-                        <LogOut className="size-4" /> Exit Console
-                    </button>
                 </div>
-            </aside>
+            </div>
+        );
+    }
 
-            {/* Main Content */}
-            <main className="relative z-10 ml-[300px] p-8 min-h-screen">
-                <div className="max-w-7xl mx-auto">
-                    {children}
-                </div>
-            </main>
-        </div>
-    );
+    return <AdminLayoutClient>{children}</AdminLayoutClient>;
 }
