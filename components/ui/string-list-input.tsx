@@ -18,8 +18,16 @@ export function StringListInput({ value, onChange, placeholder = 'Add item', lab
 
     const handleAdd = () => {
         if (!inputValue.trim()) return;
-        if (value.includes(inputValue.trim())) return;
-        onChange([...value, inputValue.trim()]);
+
+        // Split by comma and process each item
+        const newItems = inputValue
+            .split(',')
+            .map(item => item.trim())
+            .filter(item => item.length > 0 && !value.includes(item));
+
+        if (newItems.length > 0) {
+            onChange([...value, ...newItems]);
+        }
         setInputValue('');
     };
 
