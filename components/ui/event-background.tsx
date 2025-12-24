@@ -214,7 +214,7 @@ const PolarNightBackground = () => {
         left: Math.random() * 100 + "%",
         top: -Math.random() * 20 + "%",
         yEnd: 100 + Math.random() * 20 + "vh",
-        duration: 2 + Math.random() * 4, // Faster fall
+        duration: 10 + Math.random() * 10, // Slower fall
         delay: -Math.random() * 5,
         scale: 1 + Math.random() * 1.5, // Much larger scale
         opacity: 0.7 + Math.random() * 0.3 // Higher average opacity
@@ -226,7 +226,7 @@ const PolarNightBackground = () => {
         left: Math.random() * 100 + "%",
         bottom: -Math.random() * 20 + "%",
         yEnd: -(100 + Math.random() * 20) + "vh",
-        duration: 4 + Math.random() * 6,
+        duration: 15 + Math.random() * 15,
         delay: -Math.random() * 10,
         scale: 1 + Math.random() * 2, // Signficantly larger
         opacity: 0.6 + Math.random() * 0.4
