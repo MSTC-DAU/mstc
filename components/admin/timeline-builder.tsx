@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,7 @@ interface TimelineItem {
     title: string;
     description: string;
     startDate: string;
-    endDate: string;
+    endDate?: string;
 }
 
 interface TimelineBuilderProps {
@@ -19,6 +19,7 @@ interface TimelineBuilderProps {
 }
 
 export function TimelineBuilder({ value = [], onChange }: TimelineBuilderProps) {
+    const [mounted, setMounted] = useState(false);
     const [newItem, setNewItem] = useState<TimelineItem>({
         title: '',
         description: '',
@@ -26,8 +27,12 @@ export function TimelineBuilder({ value = [], onChange }: TimelineBuilderProps) 
         endDate: ''
     });
 
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const addItem = () => {
-        if (!newItem.title || !newItem.startDate || !newItem.endDate) return;
+        if (!newItem.title || !newItem.startDate) return;
         onChange([...value, newItem]);
         setNewItem({ title: '', description: '', startDate: '', endDate: '' });
     };
@@ -90,7 +95,14 @@ export function TimelineBuilder({ value = [], onChange }: TimelineBuilderProps) 
                                 <div className="font-bold text-sm">{item.title}</div>
                                 <div className="text-xs text-gray-500 flex gap-2">
                                     <Clock className="size-3" />
-                                    {new Date(item.startDate).toLocaleString()} - {new Date(item.endDate).toLocaleString()}
+                                    {mounted ? (
+                                        <>
+                                            {new Date(item.startDate).toLocaleString()}
+                                            {item.endDate && ` - ${new Date(item.endDate).toLocaleString()}`}
+                                        </>
+                                    ) : (
+                                        <span>Loading time...</span>
+                                    )}
                                 </div>
                             </div>
                             <Button type="button" variant="ghost" size="icon" onClick={() => removeItem(idx)} className="text-red-400 hover:text-red-300">

@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { RichTextEditor } from './rich-text-editor';
 import { EVENT_THEME_CONFIG } from '@/lib/themes-config';
 import { ThemeSelector } from '@/components/admin/theme-selector';
-import { Palette, Clock } from 'lucide-react';
+import { Palette, Clock, Plus, Trash2, GripVertical } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { TimelineBuilder } from './timeline-builder';
 
@@ -23,9 +23,73 @@ export function EditEventSettings({ event }: { event: any }) {
     const [rules, setRules] = useState(event.rules || '');
     const [theme, setTheme] = useState(event.theme || 'default');
     const [timeline, setTimeline] = useState(event.timeline || []);
+    const [config, setConfig] = useState(event.config || { registrationFields: [] });
+
+    const addField = () => {
+        setConfig((prev: any) => ({
+            ...prev,
+            registrationFields: [
+                ...(prev.registrationFields || []),
+                { name: `field_${Date.now()}`, label: 'New Field', type: 'text' }
+            ]
+        }));
+    };
+
+    const removeField = (index: number) => {
+        setConfig((prev: any) => ({
+            ...prev,
+            registrationFields: prev.registrationFields.filter((_: any, i: number) => i !== index)
+        }));
+    };
+
+    const updateField = (index: number, key: string, value: string) => {
+        setConfig((prev: any) => {
+            const newFields = [...(prev.registrationFields || [])];
+            newFields[index] = { ...newFields[index], [key]: value };
+            // Auto-update name slug if label changes (optional, but good for UX, maybe just leave manual or generated on add)
+            if (key === 'label') {
+                newFields[index].name = value.toLowerCase().replace(/[^a-z0-9]/g, '_');
+            }
+            return { ...prev, registrationFields: newFields };
+        });
+    };
 
     async function handleSubmit(formData: FormData) {
         setLoading(true);
+
+        // Helper to convert local datetime-local string to UTC ISO string
+        const toUTC = (dateStr: string) => {
+            if (!dateStr) return '';
+            return new Date(dateStr).toISOString();
+        };
+
+        // Convert main date fields
+        const dateFields = ['startDate', 'endDate', 'registrationStartDate', 'registrationEndDate'];
+        dateFields.forEach(field => {
+            const val = formData.get(field) as string;
+            // Only convert if it doesn't end in Z (which would mean it's already UTC, though inputs usually aren't)
+            // Actually, input type='datetime-local' returns YYYY-MM-DDTHH:mm without Z.
+            if (val && !val.endsWith('Z')) {
+                formData.set(field, toUTC(val));
+            }
+        });
+
+        // Convert timeline dates
+        const timelineJson = formData.get('timeline') as string;
+        if (timelineJson) {
+            try {
+                const timeline = JSON.parse(timelineJson);
+                const updatedTimeline = timeline.map((item: any) => ({
+                    ...item,
+                    startDate: item.startDate && !item.startDate.endsWith('Z') ? toUTC(item.startDate) : item.startDate,
+                    endDate: item.endDate && !item.endDate.endsWith('Z') ? toUTC(item.endDate) : item.endDate
+                }));
+                formData.set('timeline', JSON.stringify(updatedTimeline));
+            } catch (e) {
+                console.error("Error parsing timeline json", e);
+            }
+        }
+
         const res = await updateEventSettings(event.id, formData);
         setLoading(false);
 
@@ -122,6 +186,66 @@ export function EditEventSettings({ event }: { event: any }) {
                     </Label>
                     <TimelineBuilder value={timeline} onChange={setTimeline} />
                     <input type="hidden" name="timeline" value={JSON.stringify(timeline)} />
+                </div>
+
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                    <div className="flex justify-between items-center">
+                        <Label className="text-lg font-semibold text-green-400 flex items-center gap-2">
+                            <GripVertical className="size-5" /> Registration Fields
+                        </Label>
+                        <Button type="button" onClick={addField} size="sm" variant="secondary" className="h-8">
+                            <Plus className="size-4 mr-2" /> Add Field
+                        </Button>
+                    </div>
+
+                    <div className="space-y-2">
+                        {(config.registrationFields || []).map((field: any, index: number) => (
+                            <div key={index} className="flex gap-2 items-start p-3 bg-white/5 rounded-lg border border-white/10">
+                                <div className="grid gap-2 flex-1 md:grid-cols-2">
+                                    <div className="space-y-1">
+                                        <Label className="text-xs text-white/60">Label</Label>
+                                        <Input
+                                            value={field.label}
+                                            onChange={(e) => updateField(index, 'label', e.target.value)}
+                                            placeholder="e.g. T-Shirt Size"
+                                            className="bg-black/20"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label className="text-xs text-white/60">Type</Label>
+                                        <Select
+                                            value={field.type}
+                                            onValueChange={(val) => updateField(index, 'type', val)}
+                                        >
+                                            <SelectTrigger className="bg-black/20">
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="text">Text Input</SelectItem>
+                                                <SelectItem value="number">Number</SelectItem>
+                                                <SelectItem value="textarea">Long Text</SelectItem>
+                                                <SelectItem value="url">URL</SelectItem>
+                                                <SelectItem value="select">Select (Not impl)</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
+                                    className="text-red-400 hover:text-red-300 hover:bg-red-950/20 mt-6"
+                                    onClick={() => removeField(index)}
+                                >
+                                    <Trash2 className="size-4" />
+                                </Button>
+                            </div>
+                        ))}
+                        {(!config.registrationFields || config.registrationFields.length === 0) && (
+                            <p className="text-sm text-white/40 italic text-center py-4">No custom registration fields.</p>
+                        )}
+                        <input type="hidden" name="config" value={JSON.stringify(config)} />
+                    </div>
                 </div>
             </div>
 

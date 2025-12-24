@@ -82,7 +82,7 @@ export const events = pgTable('events', {
         title: string;
         description: string;
         startDate: string; // ISO string
-        endDate: string; // ISO string
+        endDate?: string; // ISO string
     }>>(),
     createdAt: timestamp('created_at').defaultNow(),
 });
