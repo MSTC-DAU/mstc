@@ -9,6 +9,7 @@ import { ShatterBackground } from '@/components/ui/shatter-background';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { ReactNode } from 'react';
+import { Analytics } from "@vercel/analytics/next";
 
 const navItems = [
     { name: 'Overview', href: '/admin', icon: LayoutDashboard },
@@ -26,6 +27,7 @@ export function AdminLayoutClient({ children }: { children: ReactNode }) {
         <div className="min-h-screen text-[#E8EAED] font-sans relative bg-[#202124]">
             {/* Animated Background */}
             <ShatterBackground />
+            <Analytics />
 
             {/* Sidebar */}
             <aside className="w-[300px] border-r-4 border-black flex flex-col fixed h-full bg-[#202124] z-40">

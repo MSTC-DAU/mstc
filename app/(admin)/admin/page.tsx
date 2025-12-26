@@ -50,7 +50,7 @@ export default async function AdminDashboard() {
                     <div className="text-center z-10">
                         <Activity className="size-16 text-[#9AA0A6] mx-auto mb-4 opacity-50" />
                         <h3 className="text-2xl font-black text-[#E8EAED] uppercase italic">Traffic Analytics</h3>
-                        <p className="text-[#9AA0A6] font-bold">Module Offline. Connect Analytics Provider.</p>
+                        <p className="text-green-400 font-bold">Tracking Active. View data on Vercel Dashboard.</p>
                     </div>
                 </div>
 
@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
                     <div className="text-center z-10">
                         <Trophy className="size-16 text-[#9AA0A6] mx-auto mb-4 opacity-50" />
                         <h3 className="text-2xl font-black text-[#E8EAED] uppercase italic">Engagement Metrics</h3>
-                        <p className="text-[#9AA0A6] font-bold">Module Offline. Connect Analytics Provider.</p>
+                        <p className="text-green-400 font-bold">Tracking Active. View data on Vercel Dashboard.</p>
                     </div>
                 </div>
             </div>
