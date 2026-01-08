@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Textarea } from '@/components/ui/textarea';
 import { submitCheckpoint } from '@/app/actions/checkpoints';
 import { toast } from 'sonner';
+import { FormattedText } from '@/components/ui/formatted-text';
 
 interface Task {
     id: string;
@@ -90,19 +91,31 @@ export default function RoadmapViewer({
                                                 <div className="absolute top-0 left-0 w-0 h-0 border-t-[1px] border-l-[1px] border-cyan-500/0 group-hover:border-cyan-500/50 group-hover:w-2 group-hover:h-2 transition-all duration-300" />
 
                                                 <h4 className="font-bold text-gray-100 mb-1 group-hover:text-cyan-300 transition-colors uppercase tracking-tight text-sm">{task.title}</h4>
-                                                <p className="text-sm text-gray-400 font-medium leading-relaxed">{task.description}</p>
+
+                                                {/* Smart Text Display */}
+                                                <FormattedText
+                                                    text={task.description}
+                                                    className="text-sm text-gray-400 font-medium"
+                                                />
                                             </div>
                                         ))}
                                     </div>
+
+                                    {status?.submissionContent && (
+                                        <div className="my-6 p-4 rounded-sm bg-cyan-500/5 border-l-2 border-cyan-500/50">
+                                            <div className="flex items-center gap-2 text-cyan-500 mb-2 font-bold uppercase text-xs tracking-widest">
+                                                <Upload className="size-4" /> Your Submission
+                                            </div>
+                                            <FormattedText text={status.submissionContent} className="text-cyan-100/90" />
+                                        </div>
+                                    )}
 
                                     {status?.mentorFeedback && (
                                         <div className="my-6 p-4 rounded-sm bg-yellow-500/5 border-l-2 border-yellow-500">
                                             <div className="flex items-center gap-2 text-yellow-500 mb-2 font-bold uppercase text-xs tracking-widest">
                                                 <MessageSquare className="size-4" /> Mentor Feedback
                                             </div>
-                                            <p className="text-sm text-yellow-100/90 leading-relaxed">
-                                                {status.mentorFeedback}
-                                            </p>
+                                            <FormattedText text={status.mentorFeedback} className="text-yellow-100/90" />
                                         </div>
                                     )}
 

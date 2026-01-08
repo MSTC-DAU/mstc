@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { approveCheckpoint, rejectCheckpoint } from '@/app/actions/grading';
 import { toast } from 'sonner';
 import { CheckCircle2, XCircle, ExternalLink, MessageSquare } from 'lucide-react';
+import { FormattedText } from '@/components/ui/formatted-text';
 
 export default function CheckpointReviewQueue({ submissions, eventId }: { submissions: any[], eventId: string }) {
     const [loading, setLoading] = useState<string | null>(null); // storing ID of processing item
@@ -60,19 +61,8 @@ export default function CheckpointReviewQueue({ submissions, eventId }: { submis
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="p-3 bg-black/30 rounded-md font-mono text-sm text-gray-300 break-all">
-                            {sub.submissionContent}
+                            <FormattedText text={sub.submissionContent} />
                         </div>
-
-                        {/* Auto-detect links for convenience */}
-                        {sub.submissionContent.includes('http') && (
-                            <div className="flex gap-2">
-                                <a href={sub.submissionContent.match(/https?:\/\/[^\s]+/)?.[0]} target="_blank" rel="noopener noreferrer">
-                                    <Button variant="outline" size="sm" className="gap-2 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/10">
-                                        <ExternalLink className="size-4" /> Open Link
-                                    </Button>
-                                </a>
-                            </div>
-                        )}
 
                         <div className="flex justify-end gap-3 pt-2">
                             <Button

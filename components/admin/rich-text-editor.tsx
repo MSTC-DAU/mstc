@@ -5,6 +5,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
+import Link from '@tiptap/extension-link';
 import { Button } from '@/components/ui/button';
 import {
     Bold,
@@ -20,7 +21,9 @@ import {
     Undo,
     Redo,
     Palette,
-    Eye
+    Eye,
+    Link as LinkIcon,
+    Unlink
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -70,6 +73,14 @@ export function RichTextEditor({ value, onChange, placeholder, label }: RichText
             Underline,
             TextStyle,
             Color,
+            Link.configure({
+                openOnClick: false,
+                autolink: true,
+                defaultProtocol: 'https',
+                HTMLAttributes: {
+                    class: 'text-cyan-400 hover:underline cursor-pointer',
+                },
+            }),
         ],
         content: value,
         onUpdate: ({ editor }) => {
@@ -160,6 +171,39 @@ export function RichTextEditor({ value, onChange, placeholder, label }: RichText
                         title="Strikethrough"
                     >
                         <Strikethrough className="size-4" />
+                    </ToolbarButton>
+
+                    <div className="w-px h-4 bg-white/10 mx-1" />
+
+                    <ToolbarButton
+                        onClick={() => {
+                            const previousUrl = editor.getAttributes('link').href
+                            const url = window.prompt('URL', previousUrl)
+
+                            if (url === null) {
+                                return
+                            }
+
+                            // empty
+                            if (url === '') {
+                                editor.chain().focus().extendMarkRange('link').unsetLink().run()
+                                return
+                            }
+
+                            // update
+                            editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+                        }}
+                        isActive={editor.isActive('link')}
+                        title="Link"
+                    >
+                        <LinkIcon className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton
+                        onClick={() => editor.chain().focus().unsetLink().run()}
+                        disabled={!editor.isActive('link')}
+                        title="Unlink"
+                    >
+                        <Unlink className="size-4" />
                     </ToolbarButton>
 
                     <div className="w-px h-4 bg-white/10 mx-1" />
