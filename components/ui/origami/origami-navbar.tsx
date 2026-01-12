@@ -8,6 +8,7 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
+import { InstallPrompt } from '@/components/pwa/install-prompt';
 
 import Image from 'next/image';
 
@@ -70,6 +71,7 @@ export function OrigamiNavbar() {
 
                 {/* Actions */}
                 <div className="hidden md:flex items-center gap-4">
+                    <InstallPrompt className="h-10 px-6 border-2 border-shatter-pink text-shatter-pink hover:bg-shatter-pink hover:text-black font-black uppercase tracking-widest transition-all rounded-none flex items-center gap-2" />
                     {session ? (
                         <Link href="/dashboard">
                             <Button className="h-10 px-6 bg-shatter-yellow hover:bg-white text-black font-black uppercase tracking-widest shatter-shadow-sm border-2 border-transparent hover:border-black transition-all rounded-none">
