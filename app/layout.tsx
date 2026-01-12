@@ -1,5 +1,5 @@
 import './globals.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Toaster } from 'sonner';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { cn } from '@/lib/utils';
@@ -7,6 +7,14 @@ import { cn } from '@/lib/utils';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+export const viewport: Viewport = {
+  themeColor: '#202124',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: 'MSTC | Microsoft Student Technical Club',
@@ -21,8 +29,8 @@ export const metadata: Metadata = {
       { url: '/favicon_io/apple-touch-icon.png' },
     ],
   },
-  manifest: '/favicon_io/site.webmanifest',
 };
+
 
 import { Providers } from './providers';
 
