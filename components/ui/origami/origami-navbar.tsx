@@ -87,6 +87,11 @@ export function OrigamiNavbar() {
                     )}
                 </div>
 
+                {/* Mobile Actions */}
+                <div className="md:hidden flex items-center gap-2 mr-2">
+                    <InstallPrompt className="h-10 px-4 border-2 border-shatter-pink text-shatter-pink hover:bg-shatter-pink hover:text-black font-bold uppercase tracking-wide transition-all rounded-none flex items-center gap-2 text-xs" />
+                </div>
+
                 {/* Mobile Toggle */}
                 <button
                     onClick={() => setMobileOpen(!mobileOpen)}
