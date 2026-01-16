@@ -75,7 +75,7 @@ export const events = pgTable('events', {
     registrationEndDate: timestamp('registration_end_date'),
     config: jsonb('config').$type<{
         maxTeamSize?: number;
-        registrationFields?: Array<{ name: string; label: string; type: string; }>;
+        registrationFields?: Array<{ name: string; label: string; type: string; required?: boolean; options?: string[]; }>;
         availableDomains?: string[];
     }>(),
     timeline: jsonb('timeline').$type<Array<{

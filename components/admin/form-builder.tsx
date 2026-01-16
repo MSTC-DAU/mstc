@@ -11,7 +11,7 @@ import { Trash2, Plus } from 'lucide-react';
 export type FormField = {
     name: string;
     label: string;
-    type: 'text' | 'number' | 'url' | 'file' | 'priority_ranker';
+    type: 'text' | 'number' | 'url' | 'file' | 'priority_ranker' | 'dropdown';
     required: boolean;
     options?: string[]; // comma separated for now
 };
@@ -51,13 +51,15 @@ export function FormBuilder({ value, onChange }: { value: FormField[], onChange:
                                 <SelectItem value="url">URL</SelectItem>
                                 <SelectItem value="file">File Upload</SelectItem>
                                 <SelectItem value="priority_ranker">Priority Ranker (WoC)</SelectItem>
+                                <SelectItem value="dropdown">Dropdown Select</SelectItem>
                             </SelectContent>
                         </Select>
 
-                        {field.type === 'priority_ranker' && (
+                        {(field.type === 'priority_ranker' || field.type === 'dropdown') && (
                             <Input
                                 placeholder="Options (comma separated)"
-                                onChange={(e) => updateField(index, { options: e.target.value.split(',') })}
+                                value={field.options?.join(',') || ''}
+                                onChange={(e) => updateField(index, { options: e.target.value.split(',').map(s => s.trim()) })}
                             />
                         )}
                     </div>

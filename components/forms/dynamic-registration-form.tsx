@@ -162,6 +162,24 @@ export default function DynamicRegistrationForm({ config, eventId }: { config: a
                                 placeholder={`List your preferences for: ${field.options?.join(', ')}`}
                             />
                         )}
+
+                        {field.type === 'dropdown' && field.options && (
+                            <div className="relative">
+                                {/* Native Select for form submission reliability if JS fails, or just ease of use with formData */}
+                                <Select name={field.name} required={field.required}>
+                                    <SelectTrigger className="bg-black/20 border-white/10 text-white w-full">
+                                        <SelectValue placeholder={`Select ${field.label}`} />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-black/90 border-white/10 text-white">
+                                        {field.options.map((option: string) => (
+                                            <SelectItem key={option} value={option}>
+                                                {option}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
